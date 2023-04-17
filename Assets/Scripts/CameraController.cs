@@ -35,7 +35,6 @@ public class CameraController : MonoBehaviour
          
 
         float newCameraSize = Mathf.Lerp(minCameraSize, maxCameraSize, player.GetComponent<Rigidbody2D>().velocity.magnitude / 10f);
-        Debug.Log("newCameraSize: " + newCameraSize + " velocity: " + player.GetComponent<Rigidbody2D>().velocity.magnitude);
         camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, newCameraSize, ref currentCameraSizeVelocity, cameraSizeSmoothTime);
     }
 }

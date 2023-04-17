@@ -46,10 +46,10 @@ public class Player : MonoBehaviour
         if (isGrounded && !isAttacking && Input.GetButtonDown("Fire1"))
             PlayerAttack();
 
-        if (!Input.GetButton("Horizontal") && Mathf.Abs(ObjRigidbody.velocity.x) < 25f && !Mathf.Approximately(Mathf.Abs(ObjRigidbody.velocity.x), 0f))
+        if (!Input.GetButton("Horizontal") && Mathf.Abs(ObjRigidbody.velocity.x) > 10f && Mathf.Abs(ObjRigidbody.velocity.x) < 35f)
             State = States.stop;
 
-            IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
+        IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
     }
 
     private void PlayerRun()
@@ -66,7 +66,8 @@ public class Player : MonoBehaviour
 
         ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
-        ObjSprite.flipX = targetVelocityX < 0.0f;
+        if (Mathf.Abs(currentVelocityX) > 1f)
+            ObjSprite.flipX = targetVelocityX < 0.0f;
     }
 
     private void PlayerJump()
@@ -106,7 +107,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator ResetAttackState()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.41f);
         isAttacking = false;
     }
 
