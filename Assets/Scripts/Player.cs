@@ -6,14 +6,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private int playerHealth = 10;
+    [SerializeField] private float damageGetDelay = 0.5f;
     [SerializeField] private float playerDamage = 10f;
     [SerializeField] private float playerSpeedMultiplier = 50f;
     [SerializeField] private float playerJumpForce = 50f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
     [SerializeField] private bool isGrounded = false;
     [SerializeField] private bool isAttacking = false;
-    [SerializeField] private float damageGetDelay = 0.5f;
-
 
 
     private Rigidbody2D ObjRigidbody;
@@ -67,7 +66,7 @@ public class Player : MonoBehaviour
         ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
         if (Mathf.Abs(currentVelocityX) > 1f)
-            ObjSprite.flipX = targetVelocityX < 0.0f;
+            ObjSprite.flipX = targetVelocityX < 0f;
     }
 
     private void PlayerJump()
@@ -97,6 +96,7 @@ public class Player : MonoBehaviour
                 State = States.jump;
         }
     }
+
 
     private void PlayerAttack()
     {
