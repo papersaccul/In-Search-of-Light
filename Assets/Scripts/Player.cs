@@ -6,18 +6,21 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private int playerHealth = 10;
-    [SerializeField] private float damageGetDelay = 0.5f;
+    [SerializeField] private float damageGetDelay = 1f;
     [SerializeField] private float playerDamage = 10f;
     [SerializeField] private float playerSpeedMultiplier = 50f;
     [SerializeField] private float playerJumpForce = 50f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
     [SerializeField] private bool isGrounded = false;
     [SerializeField] private bool isAttacking = false;
+    [SerializeField] private bool isGetsDamage = false;
 
 
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
+
+    public static Player Instance { get; set; }
 
     private States State
     {
@@ -30,6 +33,8 @@ public class Player : MonoBehaviour
         ObjRigidbody = GetComponent<Rigidbody2D>();
         ObjAnimator = GetComponent<Animator>();
         ObjSprite = GetComponentInChildren<SpriteRenderer>();
+
+        Instance = this;
     }
 
     private void Update()
@@ -97,6 +102,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void PlayerGetDamage()
+    {
+        if (!isGetsDamage)
+        {
+            playerHealth -= 1;
+            Debug.Log(playerHealth);
+            isGetsDamage = true;
+            StartCoroutine(ResetGetsDamageState());
+        }
+    }
 
     private void PlayerAttack()
     {
@@ -109,6 +124,12 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(0.41f);
         isAttacking = false;
+    }
+
+    private IEnumerator ResetGetsDamageState()
+    {
+        yield return new WaitForSeconds(damageGetDelay);
+        isGetsDamage = false;
     }
 
 }

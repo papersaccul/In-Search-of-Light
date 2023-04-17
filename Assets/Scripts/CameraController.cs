@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform player;
-    [SerializeField] private float cameraFollowSpeed = 2f;
+    [SerializeField] private float cameraFollowSpeed = 3f;
     [SerializeField] private float minCameraSize = 35f;
     [SerializeField] private float maxCameraSize = 55f;
     [SerializeField] private float cameraSizeSmoothTime = 1.5f;
