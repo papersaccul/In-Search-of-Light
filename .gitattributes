@@ -1,4 +1,4 @@
 *.txt text
 *.html text
-*.css text
+*.css linguist-language=csharp
 *.js text
