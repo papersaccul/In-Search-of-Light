@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
     {
         Vector2 currentPosition = transform.position;
         Vector2 direction = Vector2.down;
-        float distance = 10.0f; 
+        float distance = 14.6f; 
 
         RaycastHit2D[] hits = Physics2D.RaycastAll(currentPosition, direction, distance);
 
