@@ -6,10 +6,15 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private int playerHealth = 10;
+    [SerializeField] private float playerDamage = 10f;
     [SerializeField] private float playerSpeedMultiplier = 50f;
     [SerializeField] private float playerJumpForce = 50f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
     [SerializeField] private bool isGrounded = false;
+    [SerializeField] private bool isAttacking = false;
+    [SerializeField] private float damageGetDelay = 0.5f;
+
+
 
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
@@ -30,13 +35,16 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (isGrounded) State = States.idle;
+        if (isGrounded && !isAttacking) State = States.idle;
 
-        if (Input.GetButton("Horizontal"))
+        if (!isAttacking && Input.GetButton("Horizontal"))
             PlayerRun();
+
         if (isGrounded && Input.GetButton("Jump"))
             PlayerJump();
-        Debug.DrawRay(transform.position, transform.forward * 5f, Color.green);
+
+        if (isGrounded && !isAttacking && Input.GetButtonDown("Fire1"))
+            PlayerAttack();
     }
 
     private void FixedUpdate()
@@ -88,6 +96,18 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void PlayerAttack()
+    {
+        State = States.attack1;
+        isAttacking = true;
+        StartCoroutine(ResetAttackState());
+    }
+
+    private IEnumerator ResetAttackState()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isAttacking = false;
+    }
 
 }
 
