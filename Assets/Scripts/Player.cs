@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int playerHealth = 10;
     [SerializeField] private float playerSpeedMultiplier = 50f;
     [SerializeField] private float playerJumpForce = 50f;
-    [SerializeField] private float playerMaxJumpHeight = 15f;
+    [SerializeField] private float playerMaxJumpHeight = 30f;
     [SerializeField] private bool isGrounded = false;
 
     private Rigidbody2D ObjRigidbody;
@@ -48,11 +48,16 @@ public class Player : MonoBehaviour
     {
         if (isGrounded) State = States.run;
 
-        Vector3 dir = transform.right * Input.GetAxis("Horizontal");
-    
-        transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, playerSpeedMultiplier * Time.deltaTime);
+        float targetVelocityX = Input.GetAxis("Horizontal") * playerSpeedMultiplier;
+        float currentVelocityX = ObjRigidbody.velocity.x;
 
-        ObjSprite.flipX = dir.x < 0.0f;
+        float smoothTime = 0.1f;
+
+        float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime);
+
+        ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
+
+        ObjSprite.flipX = targetVelocityX < 0.0f;
     }
 
     private void PlayerJump()
