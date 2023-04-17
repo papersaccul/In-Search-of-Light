@@ -1,4 +1,5 @@
+* linguist-language=C#
 *.txt text
 *.html text
-*.css linguist-language=cs
+*.css text
 *.js text
