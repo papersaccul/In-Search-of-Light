@@ -7,8 +7,8 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private float cameraFollowSpeed = 2f;
-    [SerializeField] private float minCameraSize = 30f;
-    [SerializeField] private float maxCameraSize = 45f;
+    [SerializeField] private float minCameraSize = 35f;
+    [SerializeField] private float maxCameraSize = 55f;
     [SerializeField] private float cameraSizeSmoothTime = 1.5f;
 
     private new Camera camera;
@@ -27,13 +27,12 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        
         playerPosition = player.position;
         playerPosition.z = -15f;
-        playerPosition.y += 10f;
+        playerPosition.y += 6f;
 
         transform.position = Vector3.Lerp(transform.position, playerPosition, Time.deltaTime * cameraFollowSpeed);
-
+         
 
         float newCameraSize = Mathf.Lerp(minCameraSize, maxCameraSize, player.GetComponent<Rigidbody2D>().velocity.magnitude / 10f);
         Debug.Log("newCameraSize: " + newCameraSize + " velocity: " + player.GetComponent<Rigidbody2D>().velocity.magnitude);

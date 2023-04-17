@@ -45,23 +45,24 @@ public class Player : MonoBehaviour
 
         if (isGrounded && !isAttacking && Input.GetButtonDown("Fire1"))
             PlayerAttack();
-    }
 
-    private void FixedUpdate()
-    {
-        IsGroundChecker();
+        if (!Input.GetButton("Horizontal") && Mathf.Abs(ObjRigidbody.velocity.x) < 25f && !Mathf.Approximately(Mathf.Abs(ObjRigidbody.velocity.x), 0f))
+            State = States.stop;
+
+            IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
     }
 
     private void PlayerRun()
     {
-        if (isGrounded) State = States.run;
-
         float targetVelocityX = Input.GetAxis("Horizontal") * playerSpeedMultiplier;
         float currentVelocityX = ObjRigidbody.velocity.x;
 
-        float smoothTime = 0.1f;
+        if (isGrounded && Mathf.Abs(currentVelocityX) > 0.5f)
+            State = States.run;
 
-        float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime);
+        float smoothTime = 3f;
+
+        float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.deltaTime);
 
         ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
