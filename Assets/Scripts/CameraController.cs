@@ -6,8 +6,6 @@ using UnityEngine.Rendering;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform player;
-    [SerializeField] private float minCameraDistance = -10f;
-    [SerializeField] private float maxCameraDistance = -20f;
     [SerializeField] private float cameraFollowSpeed = 2f;
     [SerializeField] private float minCameraSize = 30f;
     [SerializeField] private float maxCameraSize = 45f;
@@ -31,7 +29,7 @@ public class CameraController : MonoBehaviour
     {
         
         playerPosition = player.position;
-        playerPosition.z = -10f;
+        playerPosition.z = -15f;
         playerPosition.y += 10f;
 
         transform.position = Vector3.Lerp(transform.position, playerPosition, Time.deltaTime * cameraFollowSpeed);
