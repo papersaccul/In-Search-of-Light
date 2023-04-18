@@ -39,7 +39,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (isGrounded && !isAttacking) State = States.idle;
+        if (isGrounded && !isAttacking) 
+            State = States.idle;
 
         if (!isAttacking && Input.GetButton("Horizontal"))
             PlayerRun();
@@ -60,23 +61,29 @@ public class Player : MonoBehaviour
     {
         float targetVelocityX = Input.GetAxis("Horizontal") * playerSpeedMultiplier;
         float currentVelocityX = ObjRigidbody.velocity.x;
-
-        if (isGrounded && Mathf.Abs(currentVelocityX) > 10f)
-            State = States.run;
-
         float smoothTime = 3f;
-
         float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.deltaTime);
 
         ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
-        if (Mathf.Abs(currentVelocityX) > 1f)
+
+        if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 3f)
+        {
+            if (ObjSprite.flipX != targetVelocityX < 0f)
+                State = States.rotate;
+        }
+
+        else
+        {
+            State = States.run;
             ObjSprite.flipX = targetVelocityX < 0f;
-    }
+        }
+    } 
 
     private void PlayerJump()
     {
         float clampedVerticalSpeed = Mathf.Clamp(ObjRigidbody.velocity.y, -playerMaxJumpHeight, playerMaxJumpHeight);
+        
         ObjRigidbody.velocity = new Vector2(ObjRigidbody.velocity.x, clampedVerticalSpeed);
 
         ObjRigidbody.AddForce(Vector2.up * playerJumpForce, ForceMode2D.Impulse);
@@ -144,5 +151,6 @@ public enum States
     attack2,    // 5
     block,      // 6
     die,        // 7
-    stop        // 8    
+    stop,       // 8    
+    rotate      // 9      
 }
