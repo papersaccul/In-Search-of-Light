@@ -7,19 +7,26 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private int playerHealth = 10;
     [SerializeField] private float damageGetDelay = 1f;
-    [SerializeField] private float playerDamage = 10f;
+    [SerializeField] public float playerDamage = 3.5f;
+
     [SerializeField] private float playerSpeedMultiplier = 50f;
     [SerializeField] private float playerJumpForce = 50f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
+
     [SerializeField] private bool isGrounded = false;
-    [SerializeField] private bool isAttacking = false;
+
+    [SerializeField] public bool isAttacking = false;
+    [SerializeField] public bool isRecharged = false;
+
     [SerializeField] private bool isGetsDamage = false;
 
+    public Transform attackPosition;
+    public float attackHeight = 24.5f, attackWight = 38f;
+    public LayerMask enemyEntity;
 
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
-    private CapsuleCollider2D ObjCapsuleCollider;
 
     public static Player Instance { get; set; }
 
@@ -34,7 +41,7 @@ public class Player : MonoBehaviour
         ObjRigidbody = GetComponent<Rigidbody2D>();
         ObjAnimator = GetComponent<Animator>();
         ObjSprite = GetComponentInChildren<SpriteRenderer>();
-        ObjCapsuleCollider = GetComponentInChildren<CapsuleCollider2D>();
+        isRecharged = true;
 
         Instance = this;
     }
@@ -52,6 +59,9 @@ public class Player : MonoBehaviour
 
         if (!Input.GetButton("Horizontal") && !isAttacking && Mathf.Abs(ObjRigidbody.velocity.x) > 10f && Mathf.Abs(ObjRigidbody.velocity.x) < 35f)
             State = States.stop;
+
+        if (isGrounded && !isAttacking && Input.GetButtonDown("Fire1"))
+            PlayerAttack();
 
         IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
     }
@@ -108,6 +118,28 @@ public class Player : MonoBehaviour
         }
     }
 
+
+    private void PlayerAttack()
+    {
+        if (isGrounded && isRecharged)
+        {
+            State = States.attack1;
+            isAttacking = true;
+            isRecharged = false;
+
+            StartCoroutine(AttackAnimation());
+            StartCoroutine(AttackCoolDown());
+        }
+    }
+
+    private void onAttack()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCapsuleAll(attackPosition.position, new Vector2(attackWight, attackHeight), CapsuleDirection2D.Horizontal, 0f, enemyEntity);
+
+        foreach (Collider2D collider in colliders)
+            collider.GetComponent<Enitity>().EntityGetDamage();
+    }
+
     public void PlayerGetDamage()
     {
         if (!isGetsDamage)
@@ -117,6 +149,18 @@ public class Player : MonoBehaviour
             isGetsDamage = true;
             StartCoroutine(ResetGetsDamageState());
         }
+    }
+
+    private IEnumerator AttackAnimation()
+    {
+        yield return new WaitForSeconds(0.41f);
+        isAttacking = false;
+    }
+
+    private IEnumerator AttackCoolDown()
+    {
+        yield return new WaitForSeconds(0.65f);
+        isRecharged = true;
     }
 
     private IEnumerator ResetGetsDamageState()

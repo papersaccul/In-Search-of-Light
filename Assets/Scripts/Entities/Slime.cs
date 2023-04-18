@@ -2,18 +2,21 @@ using UnityEngine;
 
 public class Slime : Enitity
 {
-    [SerializeField] private int SlimeHealht = 3;
+    private void Start()
+    {
+        entityHealth = 5f;
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == Player.Instance.gameObject)
         {
             Player.Instance.PlayerGetDamage();
-            SlimeHealht--;
-            Debug.Log("slime: " + SlimeHealht);
+            entityHealth--;
+            Debug.Log("slime: " + entityHealth);
         }
 
-        if (SlimeHealht <= 0)
+        if (entityHealth <= 0)
             EntityDie();
     }
 }
