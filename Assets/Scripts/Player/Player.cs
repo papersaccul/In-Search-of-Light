@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -20,10 +21,11 @@ public class Player : MonoBehaviour
 
     [SerializeField] private bool isGetsDamage = false;
 
-    public Transform attackPosition;
-    public float attackHeight = 24.5f, attackWight = 38f;
+    private float swordOffsetX;
+    public float attackRange = 24.5f;
     public LayerMask enemyEntity;
 
+    public Transform ObjAttackPosition;
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
@@ -62,6 +64,9 @@ public class Player : MonoBehaviour
 
         if (isGrounded && !isAttacking && Input.GetButtonDown("Fire1"))
             PlayerAttack();
+
+        swordOffsetX = ObjSprite.flipX ? -8.5f : +8.5f;
+        ObjAttackPosition.position = new Vector3(ObjRigidbody.position.x + swordOffsetX, ObjAttackPosition.position.y, 0f);
 
         IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
     }
@@ -132,9 +137,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(ObjAttackPosition.position, attackRange);
+    }
+
     private void onAttack()
     {
-        Collider2D[] colliders = Physics2D.OverlapCapsuleAll(attackPosition.position, new Vector2(attackWight, attackHeight), CapsuleDirection2D.Horizontal, 0f, enemyEntity);
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(ObjAttackPosition.position, attackRange, enemyEntity);
 
         foreach (Collider2D collider in colliders)
             collider.GetComponent<Enitity>().EntityGetDamage();
