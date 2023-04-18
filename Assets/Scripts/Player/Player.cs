@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
+    private CapsuleCollider2D ObjCapsuleCollider;
 
     public static Player Instance { get; set; }
 
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour
         ObjRigidbody = GetComponent<Rigidbody2D>();
         ObjAnimator = GetComponent<Animator>();
         ObjSprite = GetComponentInChildren<SpriteRenderer>();
+        ObjCapsuleCollider = GetComponentInChildren<CapsuleCollider2D>();
 
         Instance = this;
     }
@@ -47,9 +49,6 @@ public class Player : MonoBehaviour
 
         if (isGrounded && Input.GetButton("Jump"))
             PlayerJump();
-
-        if (isGrounded && !isAttacking && Input.GetButtonDown("Fire1"))
-            PlayerAttack();
 
         if (!Input.GetButton("Horizontal") && !isAttacking && Mathf.Abs(ObjRigidbody.velocity.x) > 10f && Mathf.Abs(ObjRigidbody.velocity.x) < 35f)
             State = States.stop;
@@ -67,7 +66,7 @@ public class Player : MonoBehaviour
         ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
 
-        if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 3f)
+        if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f)
         {
             if (ObjSprite.flipX != targetVelocityX < 0f)
                 State = States.rotate;
@@ -118,19 +117,6 @@ public class Player : MonoBehaviour
             isGetsDamage = true;
             StartCoroutine(ResetGetsDamageState());
         }
-    }
-
-    private void PlayerAttack()
-    {
-        State = States.attack1;
-        isAttacking = true;
-        StartCoroutine(ResetAttackState());
-    }
-
-    private IEnumerator ResetAttackState()
-    {
-        yield return new WaitForSeconds(0.41f);
-        isAttacking = false;
     }
 
     private IEnumerator ResetGetsDamageState()
