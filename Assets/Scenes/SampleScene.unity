@@ -147,7 +147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 120753992}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.158, z: 0}
+  m_LocalPosition: {x: 0.18, y: -0.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2190,7 +2190,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1910713769}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.7, z: 0}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2220,12 +2220,11 @@ MonoBehaviour:
   isAttacking: 0
   isRecharged: 0
   isGetsDamage: 0
-  attackPosition: {fileID: 120753993}
-  attackHeight: 24.5
-  attackWight: 38.5
+  attackRange: 10.7
   enemyEntity:
     serializedVersion: 2
     m_Bits: 256
+  ObjAttackPosition: {fileID: 120753993}
 --- !u!212 &1910713775
 SpriteRenderer:
   m_ObjectHideFlags: 0
