@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] public float playerDamage = 3.5f;
     [SerializeField] private int playerHealth = 10;
     [SerializeField] private float damageGetDelay = 1f;
-    [SerializeField] public float playerDamage = 3.5f;
 
     [SerializeField] private float playerSpeedMultiplier = 50f;
     [SerializeField] private float playerJumpForce = 50f;
@@ -18,14 +19,12 @@ public class Player : MonoBehaviour
 
     [SerializeField] public bool isAttacking = false;
     [SerializeField] public bool isRecharged = false;
+    [SerializeField] private bool isGetDamage = false;
 
-    [SerializeField] private bool isGetsDamage = false;
-
-    private float swordOffsetX;
     public float attackRange = 24.5f;
     public LayerMask enemyEntity;
-
     public Transform ObjAttackPosition;
+
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
@@ -77,7 +76,6 @@ public class Player : MonoBehaviour
 
         ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
-
         if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f)
         {
             if (ObjSprite.flipX != targetVelocityX < 0f)
@@ -99,27 +97,6 @@ public class Player : MonoBehaviour
 
         ObjRigidbody.AddForce(Vector2.up * playerJumpForce, ForceMode2D.Impulse);
     }
-
-    private void IsGroundChecker()
-    {
-        Vector2 currentPosition = transform.position;
-        Vector2 direction = Vector2.down;
-        float distance = 14.6f; 
-
-        RaycastHit2D[] hits = Physics2D.RaycastAll(currentPosition, direction, distance);
-
-        foreach (RaycastHit2D hit in hits)
-            isGrounded = (hit.collider != null && hit.collider.gameObject != gameObject);
-
-        if (!isGrounded)
-        {
-            if (ObjRigidbody.velocity.y < 0)
-                State = States.fall;
-            else
-                State = States.jump;
-        }
-    }
-
 
     private void PlayerAttack()
     {
@@ -143,6 +120,8 @@ public class Player : MonoBehaviour
 
     private void onAttack()
     {
+        float swordOffsetX;
+
         swordOffsetX = ObjSprite.flipX ? -8.5f : +8.5f;
         ObjAttackPosition.position = new Vector3(ObjRigidbody.position.x + swordOffsetX, ObjAttackPosition.position.y, 0f);
 
@@ -154,15 +133,36 @@ public class Player : MonoBehaviour
 
     public void PlayerGetDamage()
     {
-        if (!isGetsDamage)
+        if (!isGetDamage)
         {
             playerHealth -= 1;
             Debug.Log(playerHealth);
-            isGetsDamage = true;
+            isGetDamage = true;
             StartCoroutine(ResetGetsDamageState());
         }
     }
 
+    private void IsGroundChecker()
+    {
+        Vector2 currentPosition = transform.position;
+        Vector2 direction = Vector2.down;
+        float distance = 14.6f; 
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(currentPosition, direction, distance);
+
+        foreach (RaycastHit2D hit in hits)
+            isGrounded = (hit.collider != null && hit.collider.gameObject != gameObject);
+
+        if (!isGrounded)
+        {
+            if (ObjRigidbody.velocity.y < 0)
+                State = States.fall;
+            else
+                State = States.jump;
+        }
+    }
+
+    // Someday I'll redo it through the Unity animator...
     private IEnumerator AttackAnimation()
     {
         yield return new WaitForSeconds(0.41f);
@@ -178,11 +178,12 @@ public class Player : MonoBehaviour
     private IEnumerator ResetGetsDamageState()
     {
         yield return new WaitForSeconds(damageGetDelay);
-        isGetsDamage = false;
+        isGetDamage = false;
     }
 
 }
 
+// And I'll redo this part in the animator someday...
 public enum States
 {
     idle,       // 0
