@@ -65,9 +65,6 @@ public class Player : MonoBehaviour
         if (isGrounded && !isAttacking && Input.GetButtonDown("Fire1"))
             PlayerAttack();
 
-        swordOffsetX = ObjSprite.flipX ? -8.5f : +8.5f;
-        ObjAttackPosition.position = new Vector3(ObjRigidbody.position.x + swordOffsetX, ObjAttackPosition.position.y, 0f);
-
         IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
     }
 
@@ -137,6 +134,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Debug Attack Range
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
@@ -145,6 +143,8 @@ public class Player : MonoBehaviour
 
     private void onAttack()
     {
+        swordOffsetX = ObjSprite.flipX ? -8.5f : +8.5f;
+        ObjAttackPosition.position = new Vector3(ObjRigidbody.position.x + swordOffsetX, ObjAttackPosition.position.y, 0f);
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(ObjAttackPosition.position, attackRange, enemyEntity);
 
