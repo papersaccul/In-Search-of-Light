@@ -162,7 +162,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Someday I'll redo it through the Unity animator...
+    // Someday I'll redo it through the Unity animator.
     private IEnumerator AttackAnimation()
     {
         yield return new WaitForSeconds(0.41f);
