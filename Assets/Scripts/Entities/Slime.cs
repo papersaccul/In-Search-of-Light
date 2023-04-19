@@ -1,10 +1,15 @@
+using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Slime : Enitity
 {
+    private Animator animator;
+
     private void Start()
     {
         entityHealth = 5f;
+        animator = GetComponent<Animator>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -12,11 +17,7 @@ public class Slime : Enitity
         if (collision.gameObject == Player.Instance.gameObject)
         {
             Player.Instance.PlayerGetDamage();
-            entityHealth--;
-            Debug.Log("slime: " + entityHealth);
         }
-
-        if (entityHealth <= 0)
-            EntityDie();
     }
+
 }
