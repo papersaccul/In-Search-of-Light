@@ -9,13 +9,11 @@ public class Slime : Enitity
     private float slimeSpeed = 20f;
     private bool slimeGetDamage = false;
     private Vector3 slimeDirection;
-    private Animator animator;
     private SpriteRenderer ObjSprite;
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-        entityHealth = 5f;
+        entityHealth = 6f;
 
         slimeDirection = transform.right;
         ObjSprite = this.GetComponentInChildren<SpriteRenderer>();
@@ -41,7 +39,7 @@ public class Slime : Enitity
         ObjSprite.flipX = slimeDirection.x > 0f;
     }
 
-    // Debug Range
+    // Debug Wall Detector Range
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;

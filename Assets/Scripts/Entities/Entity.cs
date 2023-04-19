@@ -11,7 +11,6 @@ public class Enitity : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         entityHealth -= Player.Instance.playerDamage;
-        
 
         if (entityHealth <= 0)
             animator.SetTrigger("Die");
