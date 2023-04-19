@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] public float playerDamage = 3.5f;
     [SerializeField] private int playerHealth = 10;
-    [SerializeField] private float damageGetDelay = 1f;
+    [SerializeField] private float damageGetDelay = 0.7f;
 
     [SerializeField] private float playerSpeedMultiplier = 50f;
     [SerializeField] private float playerJumpForce = 50f;
@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
+    private Animator animator;
 
     public static Player Instance { get; set; }
 
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour
         ObjRigidbody = GetComponent<Rigidbody2D>();
         ObjAnimator = GetComponent<Animator>();
         ObjSprite = GetComponentInChildren<SpriteRenderer>();
+        animator = GetComponent<Animator>();
         isRecharged = true;
 
         Instance = this;
@@ -49,7 +51,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (isGrounded && !isAttacking) 
+        if (isGrounded && !isAttacking && !isGetDamage) 
             State = States.idle;
 
         if (!isAttacking && Input.GetButton("Horizontal"))
@@ -61,7 +63,7 @@ public class Player : MonoBehaviour
         if (!Input.GetButton("Horizontal") && !isAttacking && Mathf.Abs(ObjRigidbody.velocity.x) > 10f && Mathf.Abs(ObjRigidbody.velocity.x) < 35f)
             State = States.stop;
 
-        if (isGrounded && !isAttacking && Input.GetButtonDown("Fire1"))
+        if (isGrounded && !isAttacking && !isGetDamage && Input.GetButtonDown("Fire1"))
             PlayerAttack();
 
         IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
@@ -118,6 +120,7 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireSphere(ObjAttackPosition.position, attackRange);
     }
 
+    // Will be called by animator
     private void onAttack()
     {
         float swordOffsetX;
@@ -131,13 +134,14 @@ public class Player : MonoBehaviour
             collider.GetComponent<Enitity>().EntityGetDamage();
     }
 
-    public void PlayerGetDamage()
+    public void PlayerGetDamage(int damage)
     {
         if (!isGetDamage)
         {
-            playerHealth -= 1;
+            playerHealth -= damage;
             Debug.Log(playerHealth);
             isGetDamage = true;
+            State = States.getDamage;
             StartCoroutine(ResetGetsDamageState());
         }
     }
@@ -195,5 +199,6 @@ public enum States
     block,      // 6
     die,        // 7
     stop,       // 8    
-    rotate      // 9      
+    rotate,     // 9      
+    getDamage         // 10
 }

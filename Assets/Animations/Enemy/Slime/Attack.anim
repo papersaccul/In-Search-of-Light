@@ -28,7 +28,7 @@ AnimationClip:
       value: {fileID: 21300000, guid: 52f2c08be076b1741ae5967b6f5fdc9b, type: 3}
     - time: 0.35
       value: {fileID: 21300000, guid: 024c08d2f4c76014c935395893b0b71e, type: 3}
-    - time: 0.48333332
+    - time: 0.5
       value: {fileID: 21300000, guid: c7bde057c1e87e249b7fdac6b000f12a, type: 3}
     - time: 0.6
       value: {fileID: 21300000, guid: 44eecc6a48cc2504ba13c720afa79871, type: 3}
@@ -91,8 +91,15 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.48333332
+  - time: 0
     functionName: 
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5
+    functionName: onAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
