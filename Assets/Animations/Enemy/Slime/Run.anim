@@ -20,14 +20,14 @@ AnimationClip:
   m_PPtrCurves:
   - serializedVersion: 2
     curve:
-    - time: 0
-      value: {fileID: 21300000, guid: 74218823bb86c6b4391d329809d8fc25, type: 3}
-    - time: 0.13333334
+    - time: 0.016666668
       value: {fileID: 21300000, guid: f9f747ee4c6e1c54fbc0b2fcbc55e0c2, type: 3}
-    - time: 0.31666666
+    - time: 0.16666667
       value: {fileID: 21300000, guid: 6c74e243faa037844b66a4e794fcf6fa, type: 3}
-    - time: 0.5
+    - time: 0.33333334
       value: {fileID: 21300000, guid: c3402720d48a56947a980584a2d2cb53, type: 3}
+    - time: 0.5
+      value: {fileID: 21300000, guid: 74218823bb86c6b4391d329809d8fc25, type: 3}
     - time: 0.6666667
       value: {fileID: 21300000, guid: 74218823bb86c6b4391d329809d8fc25, type: 3}
     attribute: m_Sprite
@@ -52,10 +52,10 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 74218823bb86c6b4391d329809d8fc25, type: 3}
     - {fileID: 21300000, guid: f9f747ee4c6e1c54fbc0b2fcbc55e0c2, type: 3}
     - {fileID: 21300000, guid: 6c74e243faa037844b66a4e794fcf6fa, type: 3}
     - {fileID: 21300000, guid: c3402720d48a56947a980584a2d2cb53, type: 3}
+    - {fileID: 21300000, guid: 74218823bb86c6b4391d329809d8fc25, type: 3}
     - {fileID: 21300000, guid: 74218823bb86c6b4391d329809d8fc25, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
@@ -81,4 +81,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.33333334
+    functionName: SlimeMove
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

@@ -9,7 +9,7 @@ public class Slime : Enitity
     // A little later, I will transfer half of the methods from the Slime class to the Entity class when I deal with other monsters
 
     [SerializeField] int attackDamage = 2;
-    [SerializeField] private float slimeSpeed = 20f;
+    [SerializeField] private float slimeSpeed = 25f;
 
     private bool slimeGetDamage = false;
     private Vector3 slimeDirection;
@@ -34,11 +34,12 @@ public class Slime : Enitity
     }
 
 
+    // Will be called by animator
     private void SlimeMove()
     {
         bool slimeDie = GetComponent<Animator>().GetBool("Die");
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection, 8f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection, 10f);
 
         foreach (RaycastHit2D hit in hits)
         {
@@ -78,11 +79,11 @@ public class Slime : Enitity
     {
         // Debug Wall Detector Range
         Gizmos.color = Color.cyan;
-        Gizmos.DrawRay(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection * 8f);
+        Gizmos.DrawRay(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection * 10f);
 
         // Debug Attack Range
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(ObjAttackPosition.position, 13f);
+        Gizmos.DrawWireSphere(ObjAttackPosition.position, 10f);
 
     }
 
