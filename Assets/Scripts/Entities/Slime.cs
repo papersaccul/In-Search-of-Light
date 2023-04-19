@@ -9,8 +9,8 @@ public class Slime : Enitity
     // A little later, I will transfer half of the methods from the Slime class to the Entity class when I deal with other monsters
 
     [SerializeField] int attackDamage = 2;
+    [SerializeField] private float slimeSpeed = 20f;
 
-    private float slimeSpeed = 20f;
     private bool slimeGetDamage = false;
     private Vector3 slimeDirection;
     private SpriteRenderer ObjSprite;
@@ -30,7 +30,7 @@ public class Slime : Enitity
 
     private void FixedUpdate()
     {
-        SlimeMove();
+        // SlimeMove();
     }
 
 
@@ -55,7 +55,7 @@ public class Slime : Enitity
         }
 
         if (!slimeGetDamage && !playerInSight && !slimeDie)
-            transform.position = Vector3.MoveTowards(transform.position, transform.position + slimeDirection, Time.deltaTime * slimeSpeed);
+            GetComponent<Rigidbody2D>().AddForce(slimeDirection.normalized * slimeSpeed, ForceMode2D.Impulse);
 
         ObjSprite.flipX = slimeDirection.x > 0f;
     }
