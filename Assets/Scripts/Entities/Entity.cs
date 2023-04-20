@@ -19,15 +19,10 @@ public class Entity : MonoBehaviour
         if (entityHealth <= 0)
             animator.SetTrigger("Die");
 
-        else if (isGrounded) animator.SetTrigger("Hurt");
+        else if (isGrounded) animator.Play("Hurt");
     }
 
-    public virtual void ToggleGetDamage()
-    {
-        GetComponent<Animator>().ResetTrigger("Hurt");
-    }
-
-    protected virtual void IsGroundChecker()
+    public virtual void IsGroundChecker()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -57,8 +52,8 @@ public class Entity : MonoBehaviour
             animator.SetBool("isGrounded", true);
         }
     }
-
-    protected virtual void EntityDie()
+   
+    public virtual void EntityDie()
     {
         Destroy(this.gameObject);
     }

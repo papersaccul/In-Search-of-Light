@@ -91,4 +91,11 @@ public class Slime : Entity
             Player.Instance.PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position);
         }
     }
+
+    // Will be called by animator
+    private void ToggleSlimeGetDamage()
+    {
+        slimeGetDamage = false;
+    }
+
 }
