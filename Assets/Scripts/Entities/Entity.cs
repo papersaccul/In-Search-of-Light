@@ -17,11 +17,12 @@ public class Entity : MonoBehaviour
         entityHealth -= Player.Instance.playerDamage;
 
         if (entityHealth <= 0)
+
             if (isGrounded)
                 animator.SetBool("Die", true);
             else animator.SetBool("AirDie", true);
 
-        else if (isGrounded) animator.SetTrigger("Hurt");
+        else animator.SetTrigger("Hurt");
     }
 
     public virtual void ToggleGetDamage()
@@ -43,7 +44,7 @@ public class Entity : MonoBehaviour
         foreach (RaycastHit2D hit in hits)
             isGrounded = (hit.collider != null && hit.collider.gameObject != gameObject);
 
-        if (!isGrounded && !(entityHealth <= 0) && !animator.GetBool("Hurt") )
+        if (!isGrounded && !(entityHealth <= 0) )
         {
             if (rb.velocity.y < 0)
             {
