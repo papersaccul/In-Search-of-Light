@@ -9,10 +9,8 @@ public class Yellow : Slime
 
     private float jumpTimer = 0f;
 
-    private void FixedUpdate()
+    private void Update()
     {
-        IsGroundChecker();
-
         if (isGrounded)
         {
             jumpTimer += Time.fixedDeltaTime;
@@ -23,5 +21,7 @@ public class Yellow : Slime
                 GetComponent<Rigidbody2D>().AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
             }
         }
+
+        IsGroundChecker();
     }
 }

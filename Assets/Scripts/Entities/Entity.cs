@@ -17,7 +17,7 @@ public class Entity : MonoBehaviour
         entityHealth -= Player.Instance.playerDamage;
 
         if (entityHealth <= 0)
-            animator.SetTrigger("Die");
+            animator.SetBool("Die", true);
 
         else if (isGrounded) animator.SetTrigger("Hurt");
     }
@@ -44,16 +44,22 @@ public class Entity : MonoBehaviour
         if (!isGrounded && !(entityHealth <= 0) && !animator.GetBool("Hurt") )
         {
             if (rb.velocity.y < 0)
-                animator.SetTrigger("Fall");
+            {
+                animator.SetBool("Fall", true);
+                animator.SetBool("Jump", false);
+            }
             else
-                animator.SetTrigger("Jump");
+            {
+                animator.SetBool("Fall", false);
+                animator.SetBool("Jump", true);
+            }
 
             animator.SetBool("isGrounded", false);
         }
         else
         {
-            animator.ResetTrigger("Fall");
-            animator.ResetTrigger("Jump");
+            animator.SetBool("Fall", false);
+            animator.SetBool("Jump", false);
             animator.SetBool("isGrounded", true);
         }
     }
