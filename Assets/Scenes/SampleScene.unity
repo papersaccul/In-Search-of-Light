@@ -133,12 +133,12 @@ GameObject:
   m_Component:
   - component: {fileID: 87932808}
   - component: {fileID: 87932813}
-  - component: {fileID: 87932812}
+  - component: {fileID: 87932814}
   - component: {fileID: 87932811}
   - component: {fileID: 87932810}
   - component: {fileID: 87932809}
   m_Layer: 8
-  m_Name: Slime (2)
+  m_Name: SlimeYellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170,7 +170,7 @@ Animator:
   m_GameObject: {fileID: 87932807}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a1c504136af3c8b4496156974a20ec24, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4d5150c817d884946840404c44aa01fa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -253,23 +253,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.14544556, y: 0.08851528}
   m_EdgeRadius: 3
---- !u!114 &87932812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 87932807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37108397395b4d548a7045fff2302802, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackDamage: 2
-  ObjAttackPosition: {fileID: 134445834}
-  player:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!212 &87932813
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -311,7 +294,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2cd1f0b6d82c5084c95ef6d3e198fe0b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e7f6570a34200204ab8addac731916c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -322,6 +305,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &87932814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87932807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da1e168d30501584db64f6a1f8e2dd60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDamage: 2
+  slimeSpeed: 25
+  player:
+    serializedVersion: 2
+    m_Bits: 0
+  ObjAttackPosition: {fileID: 134445834}
+  jumpForce: 30
+  jumpInterval: 2
+  visionDistance: 10
 --- !u!1 &120753992
 GameObject:
   m_ObjectHideFlags: 0
@@ -2107,10 +2111,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 2
-  ObjAttackPosition: {fileID: 838186904}
+  slimeSpeed: 25
   player:
     serializedVersion: 2
     m_Bits: 128
+  ObjAttackPosition: {fileID: 838186904}
 --- !u!212 &1676206157
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2337,10 +2342,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 2
-  ObjAttackPosition: {fileID: 1701852770}
+  slimeSpeed: 25
   player:
     serializedVersion: 2
     m_Bits: 128
+  ObjAttackPosition: {fileID: 1701852770}
 --- !u!212 &1805995721
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2536,10 +2542,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 2
-  ObjAttackPosition: {fileID: 717948249}
+  slimeSpeed: 25
   player:
     serializedVersion: 2
     m_Bits: 128
+  ObjAttackPosition: {fileID: 717948249}
 --- !u!212 &1810779253
 SpriteRenderer:
   m_ObjectHideFlags: 0

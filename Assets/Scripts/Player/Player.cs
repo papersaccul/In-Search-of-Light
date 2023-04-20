@@ -131,7 +131,7 @@ public class Player : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(ObjAttackPosition.position, attackRange, enemyEntity);
 
         foreach (Collider2D collider in colliders)
-            collider.GetComponent<Enitity>().EntityGetDamage();
+            collider.GetComponent<Entity>().EntityGetDamage();
     }
 
     public void PlayerGetDamage(int damage, Vector3 attackPosition)
