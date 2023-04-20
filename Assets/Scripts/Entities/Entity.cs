@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using UnityEngine;
 
-public class Enitity : MonoBehaviour
+public class Entity : MonoBehaviour
 {
     private Animator animator;
     protected float entityHealth;
@@ -17,7 +17,7 @@ public class Enitity : MonoBehaviour
 
         else animator.Play("Hurt");
     }
-
+   
     public virtual void EntityDie()
     {
         Destroy(this.gameObject);

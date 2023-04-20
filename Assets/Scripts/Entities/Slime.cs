@@ -4,7 +4,7 @@ using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngineInternal;
 
-public class Slime : Enitity
+public class Slime : Entity
 {
     // A little later, I will transfer half of the methods from the Slime class to the Entity class when I deal with other monsters
 
@@ -12,13 +12,13 @@ public class Slime : Enitity
     [SerializeField] private float slimeSpeed = 25f;
 
     private bool slimeGetDamage = false;
-    private Vector3 slimeDirection;
-    private SpriteRenderer ObjSprite;
-    public Transform ObjAttackPosition;
-    public LayerMask player;
     private bool isPlayerInSight = false;
 
-
+    private Vector3 slimeDirection;
+    private SpriteRenderer ObjSprite;
+    public LayerMask player;
+    public Transform ObjAttackPosition;
+    
 
     private void Awake()
     {
@@ -26,6 +26,11 @@ public class Slime : Enitity
 
         slimeDirection = transform.right;
         ObjSprite = this.GetComponentInChildren<SpriteRenderer>();
+    }
+
+    private void FixedUpdate()
+    {
+        
     }
 
     // Will be called by animator
