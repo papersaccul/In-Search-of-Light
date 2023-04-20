@@ -17,7 +17,9 @@ public class Entity : MonoBehaviour
         entityHealth -= Player.Instance.playerDamage;
 
         if (entityHealth <= 0)
-            animator.SetBool("Die", true);
+            if (isGrounded)
+                animator.SetBool("Die", true);
+            else animator.SetBool("AirDie", true);
 
         else if (isGrounded) animator.SetTrigger("Hurt");
     }

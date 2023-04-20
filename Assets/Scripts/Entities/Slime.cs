@@ -9,7 +9,7 @@ public class Slime : Entity
     // A little later, I will transfer half of the methods from the Slime class to the Entity class when I deal with other monsters
 
     [SerializeField] int attackDamage = 2;
-    [SerializeField] private float slimeSpeed = 25f;
+    [SerializeField] private float slimeSpeed = 30f;
 
     private bool slimeGetDamage = false;
     private bool isPlayerInSight = false;
@@ -26,6 +26,11 @@ public class Slime : Entity
 
         slimeDirection = transform.right;
         ObjSprite = this.GetComponentInChildren<SpriteRenderer>();
+    }
+
+    private void FixedUpdate()
+    {
+        IsGroundChecker();
     }
 
     // Will be called by animator
