@@ -78,15 +78,15 @@ public class Player : MonoBehaviour
 
         ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
-        if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f)
+        if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && ObjSprite.flipX != targetVelocityX < 0f)
         {
-            if (ObjSprite.flipX != targetVelocityX < 0f)
-                State = States.rotate;
+            State = States.rotate;
         }
 
         else
         {
-            State = States.run;
+            if ((Mathf.Abs(currentVelocityX) > 5f)) State = States.run;
+
             ObjSprite.flipX = targetVelocityX < 0f;
         }
     } 
@@ -143,9 +143,9 @@ public class Player : MonoBehaviour
             isGetDamage = true;
             State = States.getDamage;
 
-            Vector2 impulse = (((transform.position - attackPosition) + new Vector3(0f, 10f)).normalized * 30f);
+            Vector2 impulse = ( (( (transform.position - attackPosition) + new Vector3(0f, 10f) )).normalized * 35f );
 
-            GetComponent<Rigidbody2D>().AddForce(impulse, ForceMode2D.Impulse);
+            ObjRigidbody.AddForce(impulse, ForceMode2D.Impulse);
 
             StartCoroutine(ResetGetsDamageState());
         }
@@ -205,5 +205,5 @@ public enum States
     die,        // 7
     stop,       // 8    
     rotate,     // 9      
-    getDamage         // 10
+    getDamage   // 10
 }
