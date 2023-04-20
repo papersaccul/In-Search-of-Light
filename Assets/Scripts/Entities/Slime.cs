@@ -28,13 +28,8 @@ public class Slime : Entity
         ObjSprite = this.GetComponentInChildren<SpriteRenderer>();
     }
 
-    private void FixedUpdate()
-    {
-        
-    }
-
     // Will be called by animator
-    private void SlimeMove()
+    public void SlimeMove()
     {
         bool slimeDie = GetComponent<Animator>().GetBool("Die");
 
@@ -80,17 +75,16 @@ public class Slime : Entity
     private void OnDrawGizmosSelected()
     {
         // Debug Wall Detector Range
-        Gizmos.color = Color.cyan;
+        Gizmos.color = Color.green;
         Gizmos.DrawRay(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection * 9f);
 
         // Debug Attack Range
-        Gizmos.color = Color.cyan;
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(ObjAttackPosition.position, 10f);
-
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == Player.Instance.gameObject)
         {
