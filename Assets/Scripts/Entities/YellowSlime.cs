@@ -5,9 +5,7 @@ using UnityEngine;
 public class Yellow : Slime
 {
     [SerializeField] private float jumpForce = 50f;
-    [SerializeField] private float jumpInterval = 2f;
-    [SerializeField] private float visionDistance = 50f;
-    public Animator animator;
+    [SerializeField] private float jumpInterval = 1f;
 
     private float jumpTimer = 0f;
 
