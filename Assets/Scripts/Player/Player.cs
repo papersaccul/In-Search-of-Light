@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
         if (isGrounded && !isAttacking && !isGetDamage) 
             State = States.idle;
 
-        if (!isAttacking && Input.GetButton("Horizontal"))
+        if (!isAttacking && !isGetDamage && Input.GetButton("Horizontal"))
             PlayerRun();
 
         if (isGrounded && Input.GetButton("Jump"))

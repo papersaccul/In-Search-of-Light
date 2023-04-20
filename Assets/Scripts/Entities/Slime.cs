@@ -56,7 +56,7 @@ public class Slime : Enitity
     }
 
     // Will be called by animator
-    public void onAttack()
+    private void onAttack()
     {
         if (isPlayerInSight)
         {
