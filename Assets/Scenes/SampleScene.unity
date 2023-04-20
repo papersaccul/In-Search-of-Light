@@ -1549,7 +1549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 2
-  slimeSpeed: 30
+  slimeSpeed: 25
   player:
     serializedVersion: 2
     m_Bits: 128

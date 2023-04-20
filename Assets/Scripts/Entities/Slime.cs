@@ -9,7 +9,7 @@ public class Slime : Entity
     // A little later, I will transfer half of the methods from the Slime class to the Entity class when I deal with other monsters
 
     [SerializeField] int attackDamage = 2;
-    [SerializeField] private float slimeSpeed = 30f;
+    [SerializeField] private float slimeSpeed = 25f;
 
     private bool slimeGetDamage = false;
     private bool isPlayerInSight = false;
