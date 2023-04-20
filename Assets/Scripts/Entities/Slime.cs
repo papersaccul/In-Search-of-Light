@@ -16,7 +16,7 @@ public class Slime : Enitity
     private SpriteRenderer ObjSprite;
     public Transform ObjAttackPosition;
     public LayerMask player;
-    private bool playerInSight = false;
+    private bool isPlayerInSight = false;
 
 
 
@@ -28,18 +28,12 @@ public class Slime : Enitity
         ObjSprite = this.GetComponentInChildren<SpriteRenderer>();
     }
 
-    private void FixedUpdate()
-    {
-        // SlimeMove();
-    }
-
-
     // Will be called by animator
     private void SlimeMove()
     {
         bool slimeDie = GetComponent<Animator>().GetBool("Die");
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection, 10f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection, 9f);
 
         foreach (RaycastHit2D hit in hits)
         {
@@ -48,14 +42,14 @@ public class Slime : Enitity
 
             else if (hit.collider.gameObject == Player.Instance.gameObject)
             {
-                playerInSight = true;
+                isPlayerInSight = true;
                 if (!slimeGetDamage && !slimeDie)
                     GetComponent<Animator>().Play("Attack");
             } 
-            else playerInSight = false;
+            else isPlayerInSight = false;
         }
 
-        if (!slimeGetDamage && !playerInSight && !slimeDie)
+        if (!slimeGetDamage && !isPlayerInSight && !slimeDie)
             GetComponent<Rigidbody2D>().AddForce(slimeDirection.normalized * slimeSpeed, ForceMode2D.Impulse);
 
         ObjSprite.flipX = slimeDirection.x > 0f;
@@ -63,14 +57,17 @@ public class Slime : Enitity
 
     // Will be called by animator
     public void onAttack()
-    {   
-        ObjAttackPosition.position = new Vector3(this.GetComponent<Rigidbody2D>().position.x, ObjAttackPosition.position.y, 0f);
+    {
+        if (isPlayerInSight)
+        {
+            ObjAttackPosition.position = new Vector3(this.GetComponent<Rigidbody2D>().position.x, ObjAttackPosition.position.y, 0f);
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(ObjAttackPosition.position, 10f, player);
-        
-        if (playerInSight)
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(ObjAttackPosition.position, 10f, player);
+
+
             foreach (Collider2D collider in colliders)
-                collider.GetComponent<Player>().PlayerGetDamage(attackDamage);
+                collider.GetComponent<Player>().PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position);
+        }
     }
 
 
@@ -79,7 +76,7 @@ public class Slime : Enitity
     {
         // Debug Wall Detector Range
         Gizmos.color = Color.cyan;
-        Gizmos.DrawRay(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection * 10f);
+        Gizmos.DrawRay(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection * 9f);
 
         // Debug Attack Range
         Gizmos.color = Color.cyan;
@@ -92,7 +89,7 @@ public class Slime : Enitity
     {
         if (collision.gameObject == Player.Instance.gameObject)
         {
-            Player.Instance.PlayerGetDamage(attackDamage);
+            Player.Instance.PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position);
         }
     }
 

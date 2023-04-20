@@ -134,7 +134,7 @@ public class Player : MonoBehaviour
             collider.GetComponent<Enitity>().EntityGetDamage();
     }
 
-    public void PlayerGetDamage(int damage)
+    public void PlayerGetDamage(int damage, Vector3 attackPosition)
     {
         if (!isGetDamage)
         {
@@ -142,6 +142,11 @@ public class Player : MonoBehaviour
             Debug.Log(playerHealth);
             isGetDamage = true;
             State = States.getDamage;
+
+            Vector2 impulse = (((transform.position - attackPosition) + new Vector3(0f, 10f)).normalized * 30f);
+
+            GetComponent<Rigidbody2D>().AddForce(impulse, ForceMode2D.Impulse);
+
             StartCoroutine(ResetGetsDamageState());
         }
     }

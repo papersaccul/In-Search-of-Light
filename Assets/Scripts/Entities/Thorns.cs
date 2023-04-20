@@ -8,7 +8,7 @@ public class Thorns : MonoBehaviour
     {
         if (Player.Instance != null && collision.gameObject == Player.Instance.gameObject)
         {
-            Player.Instance.PlayerGetDamage(2);
+            Player.Instance.PlayerGetDamage(2, GetComponent<Rigidbody2D>().position);
         }
     }
 }
