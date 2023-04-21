@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
         camera = GetComponent<Camera>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         playerPosition = player.position;
         playerPosition.z = -15f;
