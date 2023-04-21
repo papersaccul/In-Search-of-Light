@@ -192,7 +192,6 @@ public class Player : MonoBehaviour
 
 }
 
-// And I'll redo this part in the animator someday...
 public enum States
 {
     idle,       // 0
