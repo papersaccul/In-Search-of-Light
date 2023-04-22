@@ -199,8 +199,8 @@ public enum States
     jump,       // 2
     fall,       // 3
     attack1,    // 4
-    attack2,    // 5
-    block,      // 6
+    attack2,    // 5 not used
+    block,      // 6 not used
     die,        // 7
     stop,       // 8    
     rotate,     // 9      

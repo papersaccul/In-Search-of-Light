@@ -23,7 +23,6 @@ public class Slime : Entity
     private void Awake()
     {
         entityHealth = 6f;
-
         slimeDirection = transform.right;
         ObjSprite = this.GetComponentInChildren<SpriteRenderer>();
     }
@@ -91,7 +90,6 @@ public class Slime : Entity
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(ObjAttackPosition.position, 10f);
     }
-
 
     public void OnCollisionEnter2D(Collision2D collision)
     {

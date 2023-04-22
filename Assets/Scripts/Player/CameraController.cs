@@ -18,9 +18,7 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         if (!player)
-        {
             player = FindObjectOfType<Player>().transform;
-        }
 
         camera = GetComponent<Camera>();
     }
@@ -33,8 +31,8 @@ public class CameraController : MonoBehaviour
 
         transform.position = Vector3.Lerp(transform.position, playerPosition, Time.deltaTime * cameraFollowSpeed);
          
-
         float newCameraSize = Mathf.Lerp(minCameraSize, maxCameraSize, player.GetComponent<Rigidbody2D>().velocity.magnitude / 10f);
+
         camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, newCameraSize, ref currentCameraSizeVelocity, cameraSizeSmoothTime);
     }
 }

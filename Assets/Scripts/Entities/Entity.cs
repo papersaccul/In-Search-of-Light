@@ -6,7 +6,7 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     private Animator animator;
-    private Rigidbody2D rb;
+    private Rigidbody2D ObjRigidbody;
 
     protected float entityHealth;
     protected bool isGrounded = false;
@@ -22,18 +22,18 @@ public class Entity : MonoBehaviour
                 animator.SetBool("Die", true);
             else animator.SetBool("AirDie", true);
 
-        else animator.SetTrigger("Hurt");
+        else animator.SetBool("Hurt", true);
     }
 
     public virtual void ToggleGetDamage()
     {
-        GetComponent<Animator>().ResetTrigger("Hurt");
+        GetComponent<Animator>().SetBool("Hurt", false);
     }
 
     protected virtual void IsGroundChecker()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        ObjRigidbody = GetComponent<Rigidbody2D>();
 
         Vector2 currentPosition = transform.position;
         Vector2 direction = Vector2.down;
@@ -46,7 +46,7 @@ public class Entity : MonoBehaviour
 
         if (!isGrounded && !(entityHealth <= 0) )
         {
-            if (rb.velocity.y < 0)
+            if (ObjRigidbody.velocity.y < 0)
             {
                 animator.SetBool("Fall", true);
                 animator.SetBool("Jump", false);
@@ -71,4 +71,5 @@ public class Entity : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
+
 }
