@@ -5,11 +5,11 @@ using UnityEngine;
 public class Yellow : Slime
 {
     [SerializeField] private float jumpForce = 60f;
-    [SerializeField] private float jumpInterval = 2f;
+    [SerializeField] private float jumpInterval = 1.5f;
 
     private float jumpTimer = 0f;
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (isGrounded)
         {

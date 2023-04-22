@@ -50,7 +50,7 @@ public class Slime : Entity
                 isPlayerInSight = true;
                 if (!slimeGetDamage && !slimeDie)
                     GetComponent<Animator>().Play("Attack");
-            } 
+            }
             else isPlayerInSight = false;
         }
 

@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int playerHealth = 10;
     [SerializeField] private float damageGetDelay = 0.7f;
 
-    [SerializeField] private float playerSpeedMultiplier = 50f;
+    [SerializeField] private float playerSpeedMultiplier = 65f;
     [SerializeField] private float playerJumpForce = 50f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
 
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
         float targetVelocityX = Input.GetAxis("Horizontal") * playerSpeedMultiplier;
         float currentVelocityX = ObjRigidbody.velocity.x;
         float smoothTime = 3f;
-        float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.deltaTime);
+        float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.fixedDeltaTime);
 
         ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
