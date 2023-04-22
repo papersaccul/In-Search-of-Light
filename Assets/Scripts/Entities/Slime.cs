@@ -49,9 +49,13 @@ public class Slime : Entity
             {
                 isPlayerInSight = true;
                 if (!slimeGetDamage && !slimeDie)
-                    GetComponent<Animator>().Play("Attack");
+                    GetComponent<Animator>().SetBool("Attack", true);
             }
-            else isPlayerInSight = false;
+            else
+            {
+                isPlayerInSight = false;
+                GetComponent<Animator>().SetBool("Attack", false);
+            }
         }
 
         if (!slimeGetDamage && !isPlayerInSight && !slimeDie)

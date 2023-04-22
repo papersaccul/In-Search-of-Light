@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
         float targetVelocityX = Input.GetAxis("Horizontal") * playerSpeedMultiplier;
         float currentVelocityX = ObjRigidbody.velocity.x;
         float smoothTime = 3f;
-        float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.fixedDeltaTime);
+        float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.deltaTime);
 
         ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
