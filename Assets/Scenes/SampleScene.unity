@@ -183,7 +183,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87932807}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -360.4, y: -143.7, z: 0.55}
+  m_LocalPosition: {x: -572.7, y: -150.5, z: 0.55}
   m_LocalScale: {x: 50, y: 50, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2461,7 +2461,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1155190363}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -701, y: -163, z: 0.55}
+  m_LocalPosition: {x: -507.6, y: -154.4, z: 0.55}
   m_LocalScale: {x: 50, y: 50, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3998,7 +3998,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1910713769}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 38, y: 25, z: 0}
+  m_LocalPosition: {x: -13.099976, y: -11.2, z: 0}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4021,7 +4021,7 @@ MonoBehaviour:
   playerDamage: 3.5
   playerHealth: 10
   damageGetDelay: 0.5
-  playerSpeedMultiplier: 50
+  playerSpeedMultiplier: 65
   playerJumpForce: 50
   playerMaxJumpHeight: 15
   isGrounded: 0
