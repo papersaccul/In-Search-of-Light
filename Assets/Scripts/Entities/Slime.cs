@@ -17,7 +17,7 @@ public class Slime : Entity
     private Vector3 slimeDirection;
     private SpriteRenderer ObjSprite;
     public LayerMask player;
-    public Transform ObjAttackPosition;
+    public Transform attackPosition;
     
 
     private void Awake()
@@ -68,9 +68,9 @@ public class Slime : Entity
     {
         if (isPlayerInSight)
         {
-            ObjAttackPosition.position = new Vector3(this.GetComponent<Rigidbody2D>().position.x, ObjAttackPosition.position.y, 0f);
+            attackPosition.position = new Vector3(this.GetComponent<Rigidbody2D>().position.x, attackPosition.position.y, 0f);
 
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(ObjAttackPosition.position, 10f, player);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPosition.position, 10f, player);
 
 
             foreach (Collider2D collider in colliders)
@@ -88,7 +88,7 @@ public class Slime : Entity
 
         // Debug Attack Range
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(ObjAttackPosition.position, 10f);
+        Gizmos.DrawWireSphere(attackPosition.position, 10f);
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
