@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Entity : MonoBehaviour
 {
@@ -10,6 +13,7 @@ public class Entity : MonoBehaviour
 
     protected float entityHealth;
     protected bool isGrounded = false;
+    protected bool isPlayerInSight = false;
 
     public virtual void EntityGetDamage()
     {
@@ -28,6 +32,27 @@ public class Entity : MonoBehaviour
     public virtual void ToggleGetDamage()
     {
         GetComponent<Animator>().SetBool("Hurt", false);
+    }
+
+    protected virtual bool MeleeAttack(Vector3 entityDirection, bool isGetDamage, bool isDie)
+    {
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * entityDirection.x + new Vector3(0f, -10f, 0f), entityDirection, 9f);
+
+        foreach (RaycastHit2D hit in hits)
+            if (hit.collider.gameObject == Player.Instance.gameObject)
+            {
+                isPlayerInSight = true;
+
+                if (!isGetDamage && !isDie)
+                    GetComponent<Animator>().SetBool("Attack", true);
+            }
+            else
+            {
+                isPlayerInSight = false;
+                GetComponent<Animator>().SetBool("Attack", false);
+            }
+
+        return isPlayerInSight;
     }
 
     protected virtual void IsGroundChecker()

@@ -12,7 +12,6 @@ public class Slime : Entity
     [SerializeField] private float slimeSpeed = 25f;
 
     private bool slimeGetDamage = false;
-    private bool isPlayerInSight = false;
 
     private Vector3 slimeDirection;
     private SpriteRenderer ObjSprite;
@@ -37,24 +36,14 @@ public class Slime : Entity
     {
         bool slimeDie = GetComponent<Animator>().GetBool("Die");
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection, 9f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f), slimeDirection, 9f);
 
         foreach (RaycastHit2D hit in hits)
         {
             if (hit.collider != null && hit.collider.gameObject != gameObject && hit.collider.gameObject != Player.Instance.gameObject)
                 slimeDirection *= -1f;
 
-            else if (hit.collider.gameObject == Player.Instance.gameObject)
-            {
-                isPlayerInSight = true;
-                if (!slimeGetDamage && !slimeDie)
-                    GetComponent<Animator>().SetBool("Attack", true);
-            }
-            else
-            {
-                isPlayerInSight = false;
-                GetComponent<Animator>().SetBool("Attack", false);
-            }
+            else MeleeAttack(slimeDirection, slimeGetDamage, slimeDie);
         }
 
         if (!slimeGetDamage && !isPlayerInSight && !slimeDie)
