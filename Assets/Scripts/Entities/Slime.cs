@@ -33,7 +33,7 @@ public class Slime : Entity
     }
 
     // Will be called by animator
-    public void SlimeMove()
+    protected void SlimeMove()
     {
         bool slimeDie = GetComponent<Animator>().GetBool("Die");
 
@@ -64,11 +64,11 @@ public class Slime : Entity
     }
 
     // Will be called by animator
-    private void onAttack()
+    protected void onAttack()
     {
         if (isPlayerInSight)
         {
-            attackPosition.position = new Vector3(this.GetComponent<Rigidbody2D>().position.x, attackPosition.position.y, 0f);
+            attackPosition.position = new Vector3(GetComponent<Rigidbody2D>().position.x, attackPosition.position.y, 0f);
 
             Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPosition.position, 10f, player);
 
