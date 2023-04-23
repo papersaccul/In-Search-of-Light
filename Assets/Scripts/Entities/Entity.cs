@@ -36,7 +36,7 @@ public class Entity : MonoBehaviour
 
     protected virtual bool MeleeAttack(Vector3 entityDirection, bool isGetDamage, bool isDie)
     {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * entityDirection.x + new Vector3(0f, -10f, 0f), entityDirection, 9f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * entityDirection.x + new Vector3(0f, -11f, 0f), entityDirection, 9f);
 
         foreach (RaycastHit2D hit in hits)
             if (hit.collider.gameObject == Player.Instance.gameObject)

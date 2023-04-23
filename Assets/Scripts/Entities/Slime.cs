@@ -74,10 +74,6 @@ public class Slime : Entity
         // Debug Wall Detector Range
         Gizmos.color = Color.green;
         Gizmos.DrawRay(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection * 9f);
-
-        // Debug Attack Range
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPosition.position, 10f);
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
