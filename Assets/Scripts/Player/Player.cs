@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
+using Unity.Burst.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
@@ -69,6 +69,16 @@ public class Player : MonoBehaviour
         IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
     }
 
+    private bool IsOnSlope()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f);
+        if (hit.collider != null && Mathf.Abs(hit.normal.x) > 0.1f)
+        {
+            return true;
+        }
+        return false;
+    }
+
     private void PlayerRun()
     {
         float targetVelocityX = Input.GetAxis("Horizontal") * playerSpeedMultiplier;
@@ -77,6 +87,15 @@ public class Player : MonoBehaviour
         float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.deltaTime);
 
         ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f);
+
+        if (IsOnSlope())
+            ObjRigidbody.velocity = new Vector2(newVelocityX, -Mathf.Abs(newVelocityX * Mathf.Tan(hit.normal.x)));
+
+        else
+            ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
+
 
         if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && ObjSprite.flipX != targetVelocityX < 0f)
         {
