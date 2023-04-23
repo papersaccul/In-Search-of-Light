@@ -142,8 +142,12 @@ public class Player : MonoBehaviour
             Debug.Log(playerHealth);
             isGetDamage = true;
             State = States.getDamage;
+            
+            ObjRigidbody.velocity = Vector2.zero;
 
-            Vector2 impulse = ( (( (transform.position - attackPosition) + new Vector3(0f, 10f) )).normalized * 35f );
+            Vector2 deltaPosition = transform.position - attackPosition;
+
+            Vector2 impulse = (deltaPosition + new Vector2(0f, 10f)).normalized * 35f;
 
             ObjRigidbody.AddForce(impulse, ForceMode2D.Impulse);
 
