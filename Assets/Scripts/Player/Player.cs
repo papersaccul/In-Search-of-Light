@@ -65,17 +65,21 @@ public class Player : MonoBehaviour
             PlayerAttack();
 
         IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
+
+        /*if (IsOnSlope())
+            Debug.Log("Slope true");
+        else Debug.Log("Slope false");*/
     }
 
-    private bool IsOnSlope()
+    /*private bool IsOnSlope()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 5f);
         if (hit.collider != null && Mathf.Abs(hit.normal.x) > 0.1f)
         {
             return true;
         }
         return false;
-    }
+    }*/
 
     private void PlayerRun()
     {
@@ -88,17 +92,16 @@ public class Player : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f);
 
-        if (IsOnSlope())
+        /*if (IsOnSlope())
             ObjRigidbody.velocity = new Vector2(newVelocityX, -Mathf.Abs(newVelocityX * Mathf.Tan(hit.normal.x)));
 
-        else
-            ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
+        else*/
+        /*ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);*/
 
+        ObjRigidbody.velocity = new Vector2(ObjRigidbody.velocity.x - (hit.normal.x * 10f), ObjRigidbody.velocity.y);
 
         if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && ObjSprite.flipX != targetVelocityX < 0f)
-        {
             State = States.rotate;
-        }
 
         else
         {
@@ -175,13 +178,14 @@ public class Player : MonoBehaviour
     private void IsGroundChecker()
     {
         Vector2 currentPosition = transform.position;
-        Vector2 direction = Vector2.down;
-        float distance = 0.1f; 
+        Vector2 boxSize = new Vector2(5f, 0.1f);
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(currentPosition, direction, distance);
+        Vector2 boxCastOrigin = currentPosition - new Vector2(0f, boxSize.y / 2f);
 
-        foreach (RaycastHit2D hit in hits)
-            isGrounded = (hit.collider != null && hit.collider.gameObject != gameObject);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(boxCastOrigin, boxSize, 0f);
+
+        foreach (Collider2D collider in colliders)
+            isGrounded = (collider.gameObject != null && collider.gameObject != gameObject);
 
         if (!isGrounded)
         {
@@ -190,6 +194,16 @@ public class Player : MonoBehaviour
             else
                 State = States.jump;
         }
+    }
+
+    // Debug Ground Checker
+    private void OnDrawGizmos()
+    {
+        Vector2 boxSize = new Vector2(5f, 0.1f);
+        if (isGrounded)
+            Gizmos.color = Color.green;
+        else Gizmos.color= Color.red;
+        Gizmos.DrawWireCube(transform.position - new Vector3(0f, boxSize.y / 2f, 0f), boxSize);
     }
 
     // Someday I'll redo it through the Unity animator.
