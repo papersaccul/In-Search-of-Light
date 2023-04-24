@@ -18,14 +18,20 @@ public class Player : MonoBehaviour
     [SerializeField] private float playerMaxJumpHeight = 30f;
 
     [SerializeField] private bool isGrounded = false;
-    [SerializeField] private bool isSlope = false;
+    [SerializeField] private bool slopeLeft = false;
+    [SerializeField] private bool slopeRight = false;
+    [SerializeField] private bool leftFeet = false;
+    [SerializeField] private bool rightFeet = false;
 
     [SerializeField] public bool isAttacking = false;
     [SerializeField] public bool isRecharged = false;
     [SerializeField] private bool isGetDamage = false;
 
+    
+
     public float attackRange = 24.5f;
     public LayerMask enemyEntity;
+    public LayerMask Ground;
     public Transform ObjAttackPosition;
 
     private Rigidbody2D ObjRigidbody;
@@ -67,7 +73,7 @@ public class Player : MonoBehaviour
         if (isGrounded && !isAttacking && !isGetDamage && Input.GetButtonDown("Fire1"))
             PlayerAttack();
 
-        IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
+        IsGroundChecker();
     }
 
     private void PlayerRun()
@@ -77,10 +83,24 @@ public class Player : MonoBehaviour
         float smoothTime = 3f;
         float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.fixedDeltaTime);
 
-        if (!isSlope)
+        if (!slopeLeft && !slopeRight)
             ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
-        else ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y + 50f * Time.fixedDeltaTime);
+        else
+        {
+            ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
+
+            Vector2 slopeDir;
+
+            
+
+            if (ObjSprite.flipX)
+                slopeDir = new Vector2(-5f, 5f);
+            else slopeDir = new Vector2(5f, 5f);
+
+            ObjRigidbody.velocity = slopeDir * playerSpeedMultiplier * 2f * Time.fixedDeltaTime;
+        }
+
 
 
         if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && ObjSprite.flipX != targetVelocityX < 0f)
@@ -157,22 +177,29 @@ public class Player : MonoBehaviour
     private void IsGroundChecker()
     {
         Vector2 currentPosition = transform.position;
-        Vector2 boxSize = new Vector2(3.5f, 0.1f);
+        Vector2 boxSize = new(2f, 0.1f);
 
-        Vector2 boxCastOrigin = currentPosition - new Vector2(0f, boxSize.y / 2f);
-
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(boxCastOrigin, boxSize, 0f);
-
-        foreach (Collider2D collider in colliders)
+        Collider2D[] collidersRight = Physics2D.OverlapBoxAll(currentPosition - new Vector2(-1.1f, boxSize.y / 2f), boxSize, 0f);
+        Collider2D[] collidersLeft = Physics2D.OverlapBoxAll(currentPosition - new Vector2(1.1f, boxSize.y / 2f), boxSize, 0f);
+        
+        foreach (Collider2D collider in collidersRight)
         {
-            isGrounded = (collider.gameObject != null && collider.gameObject != gameObject);
-            isSlope = collider.gameObject.CompareTag("Slope");
+            rightFeet = collider.gameObject.CompareTag("Ground");
+            slopeRight = collider.gameObject.CompareTag("Slope");
         }
+
+        foreach (Collider2D collider in collidersLeft)
+        {
+            leftFeet = collider.gameObject.CompareTag("Ground");
+            slopeLeft = collider.gameObject.CompareTag("Slope");
+        }
+
+        isGrounded = leftFeet || rightFeet;
 
         if (!isGrounded)
         {
             if (ObjRigidbody.velocity.y < 0)
-             State = States.fall;
+                State = States.fall;
             else
                 State = States.jump;
         }
@@ -181,11 +208,18 @@ public class Player : MonoBehaviour
     // Debug Ground Checker
     private void OnDrawGizmos()
     {
-        Vector2 boxSize = new Vector2(3.5f, 0.1f);
+        Vector2 currentPosition = transform.position;
+        Vector2 boxSize = new(2f, 0.1f);
 
-        Gizmos.color = (!isGrounded && !isSlope) ? Color.red : (isSlope ? Color.yellow : Color.green);
+        if (leftFeet && !slopeLeft) Gizmos.color = Color.green;
+        else if (slopeLeft) Gizmos.color = Color.yellow;
+        else Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(currentPosition - new Vector2(1.1f, boxSize.y / 2f), boxSize);
 
-        Gizmos.DrawWireCube(transform.position - new Vector3(0f, boxSize.y / 2f, 0f), boxSize);
+        if (rightFeet && !slopeRight) Gizmos.color = Color.green;
+        else if (slopeRight) Gizmos.color = Color.yellow;
+        else Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(currentPosition - new Vector2(-1.1f, boxSize.y / 2f), boxSize);
     }
 
     // Someday I'll redo it through the Unity animator.
