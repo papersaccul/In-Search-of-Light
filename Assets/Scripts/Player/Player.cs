@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Burst.CompilerServices;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float playerMaxJumpHeight = 30f;
 
     [SerializeField] private bool isGrounded = false;
+    [SerializeField] private bool isSlope = false;
 
     [SerializeField] public bool isAttacking = false;
     [SerializeField] public bool isRecharged = false;
@@ -185,12 +188,15 @@ public class Player : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapBoxAll(boxCastOrigin, boxSize, 0f);
 
         foreach (Collider2D collider in colliders)
+        {
             isGrounded = (collider.gameObject != null && collider.gameObject != gameObject);
+            isSlope = collider.gameObject.CompareTag("Slope");
+        }
 
         if (!isGrounded)
         {
             if (ObjRigidbody.velocity.y < 0)
-                State = States.fall;
+             State = States.fall;
             else
                 State = States.jump;
         }
