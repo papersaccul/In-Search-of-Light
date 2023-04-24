@@ -28,7 +28,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
-    private Animator animator;
 
     public static Player Instance { get; set; }
 
@@ -43,7 +42,6 @@ public class Player : MonoBehaviour
         ObjRigidbody = GetComponent<Rigidbody2D>();
         ObjAnimator = GetComponent<Animator>();
         ObjSprite = GetComponentInChildren<SpriteRenderer>();
-        animator = GetComponent<Animator>();
         isRecharged = true;
 
         Instance = this;
@@ -178,7 +176,7 @@ public class Player : MonoBehaviour
     {
         Vector2 currentPosition = transform.position;
         Vector2 direction = Vector2.down;
-        float distance = 14.6f; 
+        float distance = 0.1f; 
 
         RaycastHit2D[] hits = Physics2D.RaycastAll(currentPosition, direction, distance);
 
