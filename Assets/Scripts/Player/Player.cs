@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int playerHealth = 10;
     [SerializeField] private float damageGetDelay = 0.7f;
 
-    [SerializeField] private float playerSpeedMultiplier = 65f;
+    [SerializeField] private float playerSpeedMultiplier = 55f;
     [SerializeField] private float playerJumpForce = 50f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
 
@@ -50,9 +50,9 @@ public class Player : MonoBehaviour
         Instance = this;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (isGrounded && !isAttacking && !isGetDamage) 
+        if (isGrounded && !isAttacking && !isGetDamage)
             State = States.idle;
 
         if (!isAttacking && !isGetDamage && Input.GetButton("Horizontal"))
@@ -68,50 +68,26 @@ public class Player : MonoBehaviour
             PlayerAttack();
 
         IsGroundChecker(); // if use it in FixedUpdate(), then the character gets a little stuck in the walls.
-
-        /*if (IsOnSlope())
-            Debug.Log("Slope true");
-        else Debug.Log("Slope false");*/
     }
-
-    /*private bool IsOnSlope()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 5f);
-        if (hit.collider != null && Mathf.Abs(hit.normal.x) > 0.1f)
-        {
-            return true;
-        }
-        return false;
-    }*/
 
     private void PlayerRun()
     {
         float targetVelocityX = Input.GetAxis("Horizontal") * playerSpeedMultiplier;
         float currentVelocityX = ObjRigidbody.velocity.x;
         float smoothTime = 3f;
-        float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.deltaTime);
+        float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.fixedDeltaTime);
 
-        ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
+        if (!isSlope)
+            ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f);
+        else ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y + 50f * Time.fixedDeltaTime);
 
-        /*if (IsOnSlope())
-            ObjRigidbody.velocity = new Vector2(newVelocityX, -Mathf.Abs(newVelocityX * Mathf.Tan(hit.normal.x)));
-
-        else*/
-        /*ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);*/
-
-        ObjRigidbody.velocity = new Vector2(ObjRigidbody.velocity.x - (hit.normal.x * 10f), ObjRigidbody.velocity.y);
 
         if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && ObjSprite.flipX != targetVelocityX < 0f)
             State = States.rotate;
 
-        else
-        {
-            if ((Mathf.Abs(currentVelocityX) > 5f)) State = States.run;
-
-            ObjSprite.flipX = targetVelocityX < 0f;
-        }
+        else if ((Mathf.Abs(currentVelocityX) > 5f)) State = States.run;
+                ObjSprite.flipX = targetVelocityX < 0f;
     } 
 
     private void PlayerJump()
@@ -139,7 +115,7 @@ public class Player : MonoBehaviour
     // Debug Attack Range
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.cyan;
+        Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(ObjAttackPosition.position, attackRange);
     }
 
@@ -181,7 +157,7 @@ public class Player : MonoBehaviour
     private void IsGroundChecker()
     {
         Vector2 currentPosition = transform.position;
-        Vector2 boxSize = new Vector2(5f, 0.1f);
+        Vector2 boxSize = new Vector2(3.5f, 0.1f);
 
         Vector2 boxCastOrigin = currentPosition - new Vector2(0f, boxSize.y / 2f);
 
@@ -205,10 +181,10 @@ public class Player : MonoBehaviour
     // Debug Ground Checker
     private void OnDrawGizmos()
     {
-        Vector2 boxSize = new Vector2(5f, 0.1f);
-        if (isGrounded)
-            Gizmos.color = Color.green;
-        else Gizmos.color= Color.red;
+        Vector2 boxSize = new Vector2(3.5f, 0.1f);
+
+        Gizmos.color = (!isGrounded && !isSlope) ? Color.red : (isSlope ? Color.yellow : Color.green);
+
         Gizmos.DrawWireCube(transform.position - new Vector3(0f, boxSize.y / 2f, 0f), boxSize);
     }
 
