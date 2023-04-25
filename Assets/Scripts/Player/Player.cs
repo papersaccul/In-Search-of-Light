@@ -9,34 +9,47 @@ using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] public float playerDamage = 3.5f;
+    [SerializeField, Header("Health")] 
+                     public float playerDamage = 3.5f;
     [SerializeField] private int playerHealth = 10;
     [SerializeField] private float damageGetDelay = 0.7f;
 
-    [SerializeField] private float playerSpeedMultiplier = 55f;
+    [SerializeField, Header("Movement")] 
+                     private float playerSpeedMultiplier = 55f;
     [SerializeField] private float playerJumpForce = 50f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
 
-    [SerializeField] private bool isGrounded = false;
+    [SerializeField, Header("Ground")] 
+                     private bool isGrounded = false;
+    [SerializeField] private bool isSlope = false;
     [SerializeField] private bool slopeLeft = false;
     [SerializeField] private bool slopeRight = false;
     [SerializeField] private bool leftFeet = false;
     [SerializeField] private bool rightFeet = false;
+    [SerializeField] private float slopeCheckDistance;
 
-    [SerializeField] public bool isAttacking = false;
+    [SerializeField, Header("Attack")] 
+                     public bool isAttacking = false;
     [SerializeField] public bool isRecharged = false;
     [SerializeField] private bool isGetDamage = false;
 
     
+
 
     public float attackRange = 24.5f;
     public LayerMask enemyEntity;
     public LayerMask Ground;
     public Transform ObjAttackPosition;
 
+    private Vector2 colliderSize; // for slope check
+    private Vector2 SlopeNormalPerpendicular;
+    private float slopeDownAngle;
+    private float slopeDownAngleOld;
+
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
+    private CapsuleCollider2D ObjCapsule;
 
     public static Player Instance { get; set; }
 
@@ -52,6 +65,9 @@ public class Player : MonoBehaviour
         ObjAnimator = GetComponent<Animator>();
         ObjSprite = GetComponentInChildren<SpriteRenderer>();
         isRecharged = true;
+        ObjCapsule = GetComponentInChildren<CapsuleCollider2D>();
+
+        colliderSize = ObjCapsule.size;
 
         Instance = this;
     }
@@ -74,6 +90,7 @@ public class Player : MonoBehaviour
             PlayerAttack();
 
         IsGroundChecker();
+        SlopeChecker();
     }
 
     private void PlayerRun()
@@ -83,26 +100,28 @@ public class Player : MonoBehaviour
         float smoothTime = 3f;
         float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.fixedDeltaTime);
 
-        if (!slopeLeft && !slopeRight)
-            ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
+            // default ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
-        else
+        // Ground
+        if (isGrounded && !isSlope)
         {
             ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
+        }
 
-            Vector2 slopeDir;
+        // Slope
+        else if (isGrounded && isSlope)
+        {
+            ObjRigidbody.velocity = new Vector2(SlopeNormalPerpendicular.x * -targetVelocityX, SlopeNormalPerpendicular.y * -targetVelocityX);
+        }
 
-            
-
-            if (ObjSprite.flipX)
-                slopeDir = new Vector2(-5f, 5f);
-            else slopeDir = new Vector2(5f, 5f);
-
-            ObjRigidbody.velocity = slopeDir * playerSpeedMultiplier * 2f * Time.fixedDeltaTime;
+        // Air
+        else if (!isGrounded)
+        {
+            ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
         }
 
 
-
+        // anim
         if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && ObjSprite.flipX != targetVelocityX < 0f)
             State = States.rotate;
 
@@ -194,7 +213,7 @@ public class Player : MonoBehaviour
             slopeLeft = collider.gameObject.CompareTag("Slope");
         }
 
-        isGrounded = leftFeet || rightFeet;
+        isGrounded = (leftFeet || rightFeet) || (slopeLeft || slopeRight);
 
         if (!isGrounded)
         {
@@ -202,6 +221,35 @@ public class Player : MonoBehaviour
                 State = States.fall;
             else
                 State = States.jump;
+        }
+    }
+
+    private void SlopeChecker()
+    {
+        Vector2 checkPos = transform.position - new Vector3(0f, colliderSize.y / 2);
+
+        IsSlopeCheckerVertical(checkPos);
+    }
+
+   
+
+    private void IsSlopeCheckerVertical(Vector2 checkPos) 
+    {
+        RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, slopeCheckDistance , Ground);
+
+        if (hit)
+        {
+            SlopeNormalPerpendicular = Vector2.Perpendicular(hit.normal).normalized;
+
+            slopeDownAngle = Vector2.Angle(hit.normal, Vector2.up);
+
+            if (slopeDownAngle != slopeDownAngleOld)
+                isSlope = true;
+
+            slopeDownAngleOld = slopeDownAngle;
+
+            Debug.DrawRay(hit.point, SlopeNormalPerpendicular, Color.magenta);
+            Debug.DrawRay(hit.point, hit.normal, Color.cyan);
         }
     }
 
