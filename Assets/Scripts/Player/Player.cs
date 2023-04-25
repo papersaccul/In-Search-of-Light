@@ -31,17 +31,20 @@ public class Player : MonoBehaviour
     [SerializeField, Header("Attack")] 
                      public bool isAttacking = false;
     [SerializeField] public bool isRecharged = false;
+    [SerializeField] public float attackRange = 24.5f;
     [SerializeField] private bool isGetDamage = false;
+                     public Transform ObjAttackPosition;
 
-    
+    [SerializeField, Header("Slope Friction")]
+                     private PhysicsMaterial2D zeroFriction;
+    [SerializeField] private PhysicsMaterial2D fullFriction;
 
-
-    public float attackRange = 24.5f;
+    [SerializeField, Header("Layers")]
     public LayerMask enemyEntity;
     public LayerMask Ground;
-    public Transform ObjAttackPosition;
+    
 
-    private Vector2 colliderSize; // for slope check
+    private Vector2 colliderSize;
     private Vector2 SlopeNormalPerpendicular;
     private float slopeDownAngle;
     private float slopeDownAngleOld;
@@ -77,6 +80,8 @@ public class Player : MonoBehaviour
     {
         if (isGrounded && !isAttacking && !isGetDamage)
             State = States.idle;
+
+
 
         if (!isAttacking && !isGetDamage && Input.GetButton("Horizontal"))
             PlayerRun();
@@ -214,7 +219,7 @@ public class Player : MonoBehaviour
             slopeLeft = collider.gameObject.CompareTag("Slope");
         }
 
-        isGrounded = (leftFeet || rightFeet) || (slopeLeft || slopeRight);
+        isGrounded = leftFeet || rightFeet || slopeLeft || slopeRight;
 
         if (!isGrounded)
         {
@@ -227,11 +232,12 @@ public class Player : MonoBehaviour
 
     private void SlopeChecker()
     {
-        Vector2 checkPos = transform.position - new Vector3(0f, colliderSize.y / 2);
+        Vector2 checkPos = transform.position - new Vector3(0f, colliderSize.y / 2 - 2f);
 
         RaycastHit2D slopeHitFront = Physics2D.Raycast(checkPos, transform.right, slopeCheckDistance, Ground);
         RaycastHit2D slopeHitBack = Physics2D.Raycast(checkPos, -transform.right, slopeCheckDistance, Ground);
 
+        // Horizontal
         if (slopeHitFront)
         {
             isSlope = true;
@@ -248,6 +254,7 @@ public class Player : MonoBehaviour
             isSlope = false;
         }
 
+        // Vertical
         RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, slopeCheckDistance , Ground);
 
         if (hit)
@@ -264,6 +271,12 @@ public class Player : MonoBehaviour
             Debug.DrawRay(hit.point, SlopeNormalPerpendicular, Color.magenta);
             Debug.DrawRay(hit.point, hit.normal, Color.cyan);
         }
+
+        if (isGrounded && Input.GetButton("Horizontal"))
+            ObjRigidbody.sharedMaterial = zeroFriction;
+
+        else if (isGrounded && !Input.GetButton("Horizontal"))
+            ObjRigidbody.sharedMaterial = fullFriction;
     }
 
     // Debug Ground Checker
@@ -283,7 +296,6 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireCube(currentPosition - new Vector2(-1.1f, boxSize.y / 2f), boxSize);
     }
 
-    // Someday I'll redo it through the Unity animator.
     private IEnumerator AttackAnimation()
     {
         yield return new WaitForSeconds(0.41f);
@@ -313,7 +325,7 @@ public enum States
     attack1,    // 4
     attack2,    // 5 not used
     block,      // 6 not used
-    die,        // 7
+    die,        // 7 not used
     stop,       // 8    
     rotate,     // 9      
     getDamage   // 10

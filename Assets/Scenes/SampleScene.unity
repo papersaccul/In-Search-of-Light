@@ -1485,73 +1485,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!1 &887510914
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 887510915}
-  - component: {fileID: 887510916}
-  m_Layer: 7
-  m_Name: SlopeChecker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &887510915
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 887510914}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 1910713773}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &887510916
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 887510914}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 2147483647
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 2147483647
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 1}
-  m_Direction: 0
 --- !u!1 &901448074
 GameObject:
   m_ObjectHideFlags: 0
@@ -6962,7 +6895,6 @@ Transform:
   - {fileID: 934605869}
   - {fileID: 120753993}
   - {fileID: 60513463}
-  - {fileID: 887510915}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6981,7 +6913,7 @@ MonoBehaviour:
   playerDamage: 3.5
   playerHealth: 10
   damageGetDelay: 0.5
-  playerSpeedMultiplier: 55
+  playerSpeedMultiplier: 65
   playerJumpForce: 50
   playerMaxJumpHeight: 15
   isGrounded: 0
@@ -6993,15 +6925,17 @@ MonoBehaviour:
   slopeCheckDistance: 4
   isAttacking: 0
   isRecharged: 0
-  isGetDamage: 0
   attackRange: 10.7
+  isGetDamage: 0
+  ObjAttackPosition: {fileID: 120753993}
+  zeroFriction: {fileID: 6200000, guid: 972a14fe360a3e64cbd65048805315f1, type: 2}
+  fullFriction: {fileID: 6200000, guid: 10baa3b17f32fc748a8e35c814cf3fd3, type: 2}
   enemyEntity:
     serializedVersion: 2
     m_Bits: 256
   Ground:
     serializedVersion: 2
     m_Bits: 64
-  ObjAttackPosition: {fileID: 120753993}
 --- !u!95 &1910713775
 Animator:
   serializedVersion: 5
@@ -7042,7 +6976,7 @@ CapsuleCollider2D:
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 247
   m_ForceReceiveLayers:
     serializedVersion: 2
     m_Bits: 4294967295
