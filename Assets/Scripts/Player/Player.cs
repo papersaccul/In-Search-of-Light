@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
     private Vector2 SlopeNormalPerpendicular;
     private float slopeDownAngle;
     private float slopeDownAngleOld;
+    private float slopeSideAngle;
 
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
@@ -228,13 +229,25 @@ public class Player : MonoBehaviour
     {
         Vector2 checkPos = transform.position - new Vector3(0f, colliderSize.y / 2);
 
-        IsSlopeCheckerVertical(checkPos);
-    }
+        RaycastHit2D slopeHitFront = Physics2D.Raycast(checkPos, transform.right, slopeCheckDistance, Ground);
+        RaycastHit2D slopeHitBack = Physics2D.Raycast(checkPos, -transform.right, slopeCheckDistance, Ground);
 
-   
+        if (slopeHitFront)
+        {
+            isSlope = true;
+            slopeSideAngle = Vector2.Angle(slopeHitFront.normal, Vector2.up);
+        }
+        else if (slopeHitBack)
+        {
+            isSlope = true;
+            slopeSideAngle = Vector2.Angle(slopeHitBack.normal, Vector2.up);
+        }
+        else
+        {
+            slopeSideAngle = 0f;
+            isSlope = false;
+        }
 
-    private void IsSlopeCheckerVertical(Vector2 checkPos) 
-    {
         RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, slopeCheckDistance , Ground);
 
         if (hit)
