@@ -84,19 +84,21 @@ public class Player : MonoBehaviour
         if (!isAttacking && !isGetDamage && Input.GetButton("Horizontal"))
             PlayerRun();
 
-        if (isGrounded && Input.GetButton("Jump"))
-            PlayerJump();
-
         if (!Input.GetButton("Horizontal") && !isAttacking && Mathf.Abs(ObjRigidbody.velocity.x) > 10f && Mathf.Abs(ObjRigidbody.velocity.x) < 35f)
             State = States.stop;
-
-        if (isGrounded && !isAttacking && !isGetDamage && Input.GetButtonDown("Fire1"))
-            PlayerAttack();
 
         IsGroundChecker();
         SlopeChecker();
     }
 
+    private void Update()
+    {
+        if (isGrounded && !isAttacking && !isGetDamage && Input.GetButtonDown("Fire1"))
+            PlayerAttack();
+
+        if (isGrounded && Input.GetButton("Jump"))
+            PlayerJump();
+    }
 
     private void PlayerRun()
     {
