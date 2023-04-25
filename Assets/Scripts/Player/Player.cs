@@ -81,8 +81,6 @@ public class Player : MonoBehaviour
         if (isGrounded && !isAttacking && !isGetDamage)
             State = States.idle;
 
-
-
         if (!isAttacking && !isGetDamage && Input.GetButton("Horizontal"))
             PlayerRun();
 
@@ -99,14 +97,13 @@ public class Player : MonoBehaviour
         SlopeChecker();
     }
 
+
     private void PlayerRun()
     {
         float targetVelocityX = Input.GetAxis("Horizontal") * playerSpeedMultiplier;
         float currentVelocityX = ObjRigidbody.velocity.x;
         float smoothTime = 3f;
         float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.fixedDeltaTime);
-
-            // default ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
         // Ground
         if (isGrounded && !isSlope)
@@ -125,7 +122,6 @@ public class Player : MonoBehaviour
         {
             ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
         }
-
 
         // anim
         if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && ObjSprite.flipX != targetVelocityX < 0f)
@@ -255,7 +251,7 @@ public class Player : MonoBehaviour
         }
 
         // Vertical
-        RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, slopeCheckDistance , Ground);
+        RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, slopeCheckDistance, Ground);
 
         if (hit)
         {
@@ -272,11 +268,8 @@ public class Player : MonoBehaviour
             Debug.DrawRay(hit.point, hit.normal, Color.cyan);
         }
 
-        if (isGrounded && Input.GetButton("Horizontal"))
-            ObjRigidbody.sharedMaterial = zeroFriction;
-
-        else if (isGrounded && !Input.GetButton("Horizontal"))
-            ObjRigidbody.sharedMaterial = fullFriction;
+        if (isGrounded)
+            ObjRigidbody.sharedMaterial = Input.GetButton("Horizontal") ? zeroFriction : fullFriction;
     }
 
     // Debug Ground Checker
