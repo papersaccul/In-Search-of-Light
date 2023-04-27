@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: glow_mushrooms
-  m_Shader: {fileID: -6465566751694194690, guid: 5bb41dce23bf74843a7ede0ed81fda47, type: 3}
+  m_Name: GlowLightsShader
+  m_Shader: {fileID: -6465566751694194690, guid: b1d22c4edf3721642b7557a653242449, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,10 +24,14 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GlowTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 24da1ebb3d4e1c94fbe6cb58b26f3208, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: 463a687be490c2a4b8004d7888c3cef6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_42d931c1c7334e7dbb2273446a7c3149_Texture_1:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -44,11 +48,17 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _DecalMeshBiasType: 0
+    - _DecalMeshDepthBias: 0
+    - _DecalMeshViewBias: 0
+    - _DrawOrder: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
     m_Colors:
-    - _GlowColor: {r: 0, g: 0, b: 0, a: 0}
+    - _GlowColor: {r: 0.3745098, g: 0.3745098, b: 0.3745098, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &6437617930070043091
+--- !u!114 &1226690761782783254
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
