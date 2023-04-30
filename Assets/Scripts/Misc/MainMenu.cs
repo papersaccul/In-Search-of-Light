@@ -7,7 +7,6 @@ public class MainMenu : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDe
 {
     public GameObject teleportedSprite;
     private UnityEngine.UI.Button lastSelectedButton;
-    private bool isSelected = false;
 
     public void PlayGame()
     {
@@ -17,7 +16,6 @@ public class MainMenu : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDe
     public void QuitGame()
     {
         Application.Quit();
-        Debug.Log("quit");
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -30,8 +28,6 @@ public class MainMenu : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDe
 
             button.Select();
             button.OnPointerEnter(eventData);
-
-            isSelected = true;
         }
     }
 
@@ -40,11 +36,7 @@ public class MainMenu : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDe
         UnityEngine.UI.Button button = eventData.pointerEnter.GetComponent<UnityEngine.UI.Button>();
 
         if (button != null)
-        {
             button.OnPointerExit(eventData);
-
-            isSelected = false;
-        }
     }
 
     public void OnSelect(BaseEventData eventData)
@@ -54,14 +46,13 @@ public class MainMenu : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDe
         UnityEngine.UI.Button selectedButton = eventData.selectedObject.GetComponent<UnityEngine.UI.Button>();
 
         if (selectedButton != null)
-        {
             selectedButton.Select();
-        }
+
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        StartCoroutine(DeselectAndReselect(eventData)); // If do not wait for the end of the frame, then dventdata.selectedObject will return the previous object instead of null
+        StartCoroutine(DeselectAndReselect(eventData)); // If do not wait for the end of the frame, then eventData.selectedObject will return the previous object instead of null
     }
 
     private IEnumerator DeselectAndReselect(BaseEventData eventData)
@@ -69,10 +60,7 @@ public class MainMenu : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDe
         yield return new WaitForEndOfFrame();
 
         if (eventData.selectedObject == null)
-        {
-            Debug.Log(eventData.selectedObject);
             EventSystem.current.SetSelectedGameObject(lastSelectedButton.gameObject);
-        }
     }
 
     private IEnumerator MoveSpriteSmoothly(Vector3 targetPosition)
