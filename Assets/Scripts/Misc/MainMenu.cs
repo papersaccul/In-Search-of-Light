@@ -1,8 +1,9 @@
 using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
-public class MainMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MainMenu : MonoBehaviour, IPointerEnterHandler
 {
     public GameObject teleportedSprite;
 
@@ -19,12 +20,24 @@ public class MainMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        teleportedSprite.transform.position = eventData.pointerEnter.transform.position - new Vector3(32f, 0f);
-        teleportedSprite.SetActive(true);
+        StartCoroutine(MoveSpriteSmoothly(eventData.pointerEnter.transform.position - new Vector3(20f, 0f)));
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    private IEnumerator MoveSpriteSmoothly(Vector3 targetPosition)
     {
-        teleportedSprite.SetActive(false);
+        float duration = 0.1f;
+        float timeElapsed = 0f;
+        Vector3 startPosition = teleportedSprite.transform.position;
+
+        while (timeElapsed < duration)
+        {
+            timeElapsed += Time.deltaTime;
+
+            float lerpValue = Mathf.Clamp01(timeElapsed / duration);
+
+            teleportedSprite.transform.position = Vector3.Lerp(startPosition, targetPosition, lerpValue);
+
+            yield return null;
+        }
     }
 }
