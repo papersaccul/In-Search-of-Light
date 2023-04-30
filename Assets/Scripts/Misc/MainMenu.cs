@@ -3,9 +3,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class MainMenu : MonoBehaviour, IPointerEnterHandler
+public class MainMenu : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDeselectHandler
 {
     public GameObject teleportedSprite;
+    private UnityEngine.UI.Button lastSelectedButton;
+    private bool isSelected = false;
 
     public void PlayGame()
     {
@@ -20,11 +22,63 @@ public class MainMenu : MonoBehaviour, IPointerEnterHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        StartCoroutine(MoveSpriteSmoothly(eventData.pointerEnter.transform.position - new Vector3(20f, 0f)));
+        UnityEngine.UI.Button button = eventData.pointerEnter.GetComponent<UnityEngine.UI.Button>();
+
+        if (button != null)
+        {
+            lastSelectedButton = button;
+
+            button.Select();
+            button.OnPointerEnter(eventData);
+
+            isSelected = true;
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UnityEngine.UI.Button button = eventData.pointerEnter.GetComponent<UnityEngine.UI.Button>();
+
+        if (button != null)
+        {
+            button.OnPointerExit(eventData);
+
+            isSelected = false;
+        }
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        StartCoroutine(MoveSpriteSmoothly(eventData.selectedObject.transform.position - new Vector3(20f, 0f)));
+
+        UnityEngine.UI.Button selectedButton = eventData.selectedObject.GetComponent<UnityEngine.UI.Button>();
+
+        if (selectedButton != null)
+        {
+            selectedButton.Select();
+        }
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        StartCoroutine(DeselectAndReselect(eventData)); // If do not wait for the end of the frame, then dventdata.selectedObject will return the previous object instead of null
+    }
+
+    private IEnumerator DeselectAndReselect(BaseEventData eventData)
+    {
+        yield return new WaitForEndOfFrame();
+
+        if (eventData.selectedObject == null)
+        {
+            Debug.Log(eventData.selectedObject);
+            EventSystem.current.SetSelectedGameObject(lastSelectedButton.gameObject);
+        }
     }
 
     private IEnumerator MoveSpriteSmoothly(Vector3 targetPosition)
     {
+        yield return new WaitForEndOfFrame();
+
         float duration = 0.1f;
         float timeElapsed = 0f;
         Vector3 startPosition = teleportedSprite.transform.position;
