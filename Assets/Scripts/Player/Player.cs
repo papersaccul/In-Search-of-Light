@@ -10,13 +10,13 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     [SerializeField, Header("Health")]
-    public float playerDamage = 3.5f;
+                     public float playerDamage = 3.5f;
     [SerializeField] private int playerMaxHealth = 20;
     [SerializeField] private int playerHealth = 20;
     [SerializeField] private float damageGetDelay = 0.7f;
 
     [SerializeField, Header("Movement")]
-    private float playerSpeedMultiplier = 55f;
+                     private float playerSpeedMultiplier = 55f;
     [SerializeField] private float playerJumpForce = 50f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
 

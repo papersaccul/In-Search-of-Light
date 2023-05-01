@@ -9,6 +9,7 @@ public class HealthBar : MonoBehaviour
     private Quaternion startRotation;
     public Gradient gradient;
     public Image Fill;
+    private float smoothSliderDuration = 0.1f;
 
     private void Awake()
     {
@@ -27,11 +28,23 @@ public class HealthBar : MonoBehaviour
     {
         healthbarSlider.maxValue = maxHealth;
         healthbarSlider.minValue = 0;
-        healthbarSlider.value = currentHealth;
 
-        Fill.color = gradient.Evaluate(healthbarSlider.normalizedValue);
+        StartCoroutine(UpdateHealthBarCoroutine(currentHealth));
     }
 
+    private IEnumerator UpdateHealthBarCoroutine(int currentHealth)
+    {
+        float startValue = healthbarSlider.value;
+        float endValue = currentHealth;
 
+        while (healthbarSlider.value != endValue)
+        {
+            float newValue = Mathf.MoveTowards(healthbarSlider.value, endValue, Time.deltaTime / smoothSliderDuration);
 
+            healthbarSlider.value = newValue;
+            Fill.color = gradient.Evaluate(healthbarSlider.normalizedValue);
+
+            yield return null;
+        }
+    }
 }
