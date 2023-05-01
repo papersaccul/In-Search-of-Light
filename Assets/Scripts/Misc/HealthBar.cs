@@ -7,11 +7,15 @@ public class HealthBar : MonoBehaviour
 {
     private Slider healthbarSlider;
     private Quaternion startRotation;
+    public Gradient gradient;
+    public Image Fill;
 
     private void Awake()
     {
         startRotation = transform.rotation;
         healthbarSlider = GetComponent<Slider>();
+
+        Fill.color = gradient.Evaluate(1f);
     }
 
     private void LateUpdate()
@@ -24,6 +28,8 @@ public class HealthBar : MonoBehaviour
         healthbarSlider.maxValue = maxHealth;
         healthbarSlider.minValue = 0;
         healthbarSlider.value = currentHealth;
+
+        Fill.color = gradient.Evaluate(healthbarSlider.normalizedValue);
     }
 
 

@@ -5983,6 +5983,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708f74076a97aef4e93aa6dfa23d9047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gradient:
+    serializedVersion: 2
+    key0: {r: 0.90196085, g: 0.4156863, b: 0.4156863, a: 1}
+    key1: {r: 0.79215693, g: 0.6745098, b: 0.050980397, a: 1}
+    key2: {r: 0.3254902, g: 0.7058824, b: 0.10196079, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 19661
+    ctime1: 42598
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 1
+    m_ColorSpace: -1
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  Fill: {fileID: 556932852}
 --- !u!1 &1606471233
 GameObject:
   m_ObjectHideFlags: 0
