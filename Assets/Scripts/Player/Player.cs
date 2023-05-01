@@ -9,18 +9,19 @@ using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField, Header("Health")] 
-                     public float playerDamage = 3.5f;
-    [SerializeField] private int playerHealth = 10;
+    [SerializeField, Header("Health")]
+    public float playerDamage = 3.5f;
+    [SerializeField] private int playerMaxHealth = 20;
+    [SerializeField] private int playerHealth = 20;
     [SerializeField] private float damageGetDelay = 0.7f;
 
-    [SerializeField, Header("Movement")] 
-                     private float playerSpeedMultiplier = 55f;
+    [SerializeField, Header("Movement")]
+    private float playerSpeedMultiplier = 55f;
     [SerializeField] private float playerJumpForce = 50f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
 
-    [SerializeField, Header("Ground")] 
-                     private bool isGrounded = false;
+    [SerializeField, Header("Ground")]
+    private bool isGrounded = false;
     [SerializeField] private bool isSlope = false;
     [SerializeField] private bool slopeLeft = false;
     [SerializeField] private bool slopeRight = false;
@@ -28,21 +29,21 @@ public class Player : MonoBehaviour
     [SerializeField] private bool rightFeet = false;
     [SerializeField] private float slopeCheckDistance;
 
-    [SerializeField, Header("Attack")] 
-                     public bool isAttacking = false;
+    [SerializeField, Header("Attack")]
+    public bool isAttacking = false;
     [SerializeField] public bool isRecharged = false;
     [SerializeField] public float attackRange = 24.5f;
     [SerializeField] private bool isGetDamage = false;
-                     public Transform ObjAttackPosition;
+    public Transform ObjAttackPosition;
 
     [SerializeField, Header("Slope Friction")]
-                     private PhysicsMaterial2D zeroFriction;
+    private PhysicsMaterial2D zeroFriction;
     [SerializeField] private PhysicsMaterial2D fullFriction;
 
     [SerializeField, Header("Layers")]
     public LayerMask enemyEntity;
     public LayerMask Ground;
-    
+
 
     private Vector2 colliderSize;
     private Vector2 SlopeNormalPerpendicular;
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour
     private float slopeDownAngleOld;
     private float slopeSideAngle;
 
+    [SerializeField] private HealthBar ObjHealthBar;
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
@@ -184,6 +186,8 @@ public class Player : MonoBehaviour
             Debug.Log(playerHealth);
             isGetDamage = true;
             State = States.getDamage;
+
+            ObjHealthBar.UpdateHealthBar(playerMaxHealth, playerHealth);
             
             ObjRigidbody.velocity = Vector2.zero;
 
