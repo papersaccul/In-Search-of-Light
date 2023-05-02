@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField, Header("Health")]
                      public float playerDamage = 3.5f;
     [SerializeField] public int playerMaxHealth = 20;
-    [SerializeField] public int playerHealth = 20;
+    [SerializeField] public int playerHealth = 5;
     [SerializeField] private float damageGetDelay = 0.7f;
 
     [SerializeField, Header("Movement")]
@@ -76,7 +76,6 @@ public class Player : MonoBehaviour
 
         StartCoroutine(PlayerRegeneration());
 
-        HealthBar.Instance.healthbarSlider.maxValue = playerMaxHealth;
         HealthBar.Instance.UpdateHealthBar(playerHealth);
 
         Instance = this;
@@ -300,14 +299,15 @@ public class Player : MonoBehaviour
 
     private IEnumerator PlayerRegeneration()
     {
-        while (playerHealth <= 20)
+        while (playerHealth < 20)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.5f);
 
             if (!isGetDamage)
             {
                 playerHealth++;
                 HealthBar.Instance.UpdateHealthBar(playerHealth);
+                Debug.Log(playerHealth);
             }
         }
     }
