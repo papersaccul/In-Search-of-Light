@@ -11,8 +11,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField, Header("Health")]
                      public float playerDamage = 3.5f;
-    [SerializeField] public float playerMaxHealth = 20;
-    [SerializeField] public int playerHealth = 5;
+    [SerializeField] public int playerMaxHealth = 20;
+    [SerializeField] public float playerHealth = 10f;
     [SerializeField] private float damageGetDelay = 0.7f;
 
     [SerializeField, Header("Movement")]
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
 
         colliderSize = ObjCapsule.size;
 
-        //StartCoroutine(PlayerRegeneration());
+        StartCoroutine(PlayerRegeneration());
 
         HealthBar.Instance.UpdateHealthBar(playerHealth);
 
@@ -301,9 +301,9 @@ public class Player : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(5f);
 
-            if (!isGetDamage && playerHealth < 20)
+            if (!isGetDamage && playerHealth < 10)
             {
                 playerHealth++;
                 HealthBar.Instance.UpdateHealthBar(playerHealth);

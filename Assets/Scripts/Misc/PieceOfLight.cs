@@ -19,7 +19,7 @@ public class PieceOfLight : Entity
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            player.playerHealth++;
+            player.playerHealth += 0.5f;
             HealthBar.Instance.UpdateHealthBar(player.playerHealth);
             EntityDie();
         }

@@ -27,7 +27,7 @@ public class Entity : MonoBehaviour
 
         if (entityHealth <= 0)
         {
-            DropLight(Random.Range(1, 5));
+            DropLight(Random.Range(4, 8));
 
             if (isGrounded)
                 animator.SetBool("Die", true);
@@ -108,7 +108,7 @@ public class Entity : MonoBehaviour
             GameObject pieceOfLight = Instantiate(pieceOfLightPrefab, transform.position, Quaternion.identity);
 
             Vector2 direction = new Vector2(Random.Range(-1f, 1f), Random.Range(0.5f, 1f)).normalized;
-            pieceOfLight.GetComponent<Rigidbody2D>().AddForce(direction * 8f);
+            pieceOfLight.GetComponent<Rigidbody2D>().AddForce(direction * 7f);
         }
     }
 
