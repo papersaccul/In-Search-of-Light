@@ -9,10 +9,16 @@ public class Entity : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D ObjRigidbody;
+    private GameObject pieceOfLightPrefab;
 
     protected float entityHealth;
     protected bool isGrounded = false;
     protected bool isPlayerInSight = false;
+
+    private void Start()
+    {
+        pieceOfLightPrefab = Resources.Load<GameObject>("PieceofLight");
+    }
 
     public virtual void EntityGetDamage()
     {
@@ -20,10 +26,14 @@ public class Entity : MonoBehaviour
         entityHealth -= Player.Instance.playerDamage;
 
         if (entityHealth <= 0)
+        {
+            DropLight(Random.Range(1, 5));
 
             if (isGrounded)
                 animator.SetBool("Die", true);
+
             else animator.SetBool("AirDie", true);
+        }
 
         else animator.SetBool("Hurt", true);
     }
@@ -88,6 +98,17 @@ public class Entity : MonoBehaviour
             animator.SetBool("Fall", false);
             animator.SetBool("Jump", false);
             animator.SetBool("isGrounded", true);
+        }
+    }
+
+    protected virtual void DropLight(int pieceСount)
+    {
+        for (int i = 0; i < pieceСount; i++)
+        {
+            GameObject pieceOfLight = Instantiate(pieceOfLightPrefab, transform.position, Quaternion.identity);
+
+            Vector2 direction = new Vector2(Random.Range(-1f, 1f), Random.Range(0.5f, 1f)).normalized;
+            pieceOfLight.GetComponent<Rigidbody2D>().AddForce(direction * 8f);
         }
     }
 

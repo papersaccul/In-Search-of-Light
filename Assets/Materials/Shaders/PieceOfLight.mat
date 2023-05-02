@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Emission Fill
+  m_Name: PieceOfLight
   m_Shader: {fileID: -6465566751694194690, guid: b1d22c4edf3721642b7557a653242449, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GlowTexture:
-        m_Texture: {fileID: 2800000, guid: 70d0a1182b29d6347ac70374c3593bba, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -60,7 +60,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _GlowColor: {r: 1, g: 1, b: 1, a: 0.80784315}
+    - _GlowColor: {r: 0.043678757, g: 0.043678757, b: 0.043678757, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &1226690761782783254
 MonoBehaviour:
