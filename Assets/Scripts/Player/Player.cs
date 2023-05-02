@@ -11,8 +11,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField, Header("Health")]
                      public float playerDamage = 3.5f;
-    [SerializeField] private int playerMaxHealth = 20;
-    [SerializeField] private int playerHealth = 20;
+    [SerializeField] public int playerMaxHealth = 20;
+    [SerializeField] public int playerHealth = 20;
     [SerializeField] private float damageGetDelay = 0.7f;
 
     [SerializeField, Header("Movement")]
@@ -51,7 +51,6 @@ public class Player : MonoBehaviour
     private float slopeDownAngleOld;
     private float slopeSideAngle;
 
-    [SerializeField] private HealthBar ObjHealthBar;
     private Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
@@ -74,6 +73,11 @@ public class Player : MonoBehaviour
         ObjCapsule = GetComponentInChildren<CapsuleCollider2D>();
 
         colliderSize = ObjCapsule.size;
+
+        StartCoroutine(PlayerRegeneration());
+
+        HealthBar.Instance.healthbarSlider.maxValue = playerMaxHealth;
+        HealthBar.Instance.UpdateHealthBar(playerHealth);
 
         Instance = this;
     }
@@ -183,12 +187,9 @@ public class Player : MonoBehaviour
         if (!isGetDamage)
         {
             playerHealth -= damage;
-            Debug.Log(playerHealth);
             isGetDamage = true;
             State = States.getDamage;
-
-            ObjHealthBar.UpdateHealthBar(playerMaxHealth, playerHealth);
-            
+            HealthBar.Instance.UpdateHealthBar(playerHealth);
             ObjRigidbody.velocity = Vector2.zero;
 
             Vector2 deltaPosition = transform.position - attackPosition;
@@ -200,6 +201,7 @@ public class Player : MonoBehaviour
             StartCoroutine(ResetGetsDamageState());
         }
     }
+
 
     private void IsGroundChecker()
     {
@@ -275,7 +277,7 @@ public class Player : MonoBehaviour
         }
 
         if (isGrounded)
-            ObjRigidbody.sharedMaterial = Input.GetButton("Horizontal") ? zeroFriction : fullFriction;
+            ObjRigidbody.sharedMaterial = Input.GetButton("Horizontal") || isGetDamage ? zeroFriction : fullFriction;
     }
 
     // Debug Ground Checker
@@ -295,6 +297,20 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireCube(currentPosition - new Vector2(-1.1f, boxSize.y / 2f), boxSize);
     }
 
+
+    private IEnumerator PlayerRegeneration()
+    {
+        while (playerHealth <= 20)
+        {
+            yield return new WaitForSeconds(1f);
+
+            if (!isGetDamage)
+            {
+                playerHealth++;
+                HealthBar.Instance.UpdateHealthBar(playerHealth);
+            }
+        }
+    }
     private IEnumerator AttackAnimation()
     {
         yield return new WaitForSeconds(0.41f);

@@ -2,49 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class HealthBar : MonoBehaviour
 {
-    private Slider healthbarSlider;
-    private Quaternion startRotation;
+
+    public static HealthBar Instance { get; set; }
+
+    public Slider healthbarSlider;
     public Gradient gradient;
     public Image Fill;
-    private float smoothSliderDuration = 0.1f;
+    public Slider lightSlider;
+    private float smoothSliderDuration = 0.3f;
 
     private void Awake()
     {
-        startRotation = transform.rotation;
+        Instance = this;
+
         healthbarSlider = GetComponent<Slider>();
 
         Fill.color = gradient.Evaluate(1f);
-    }
-
-    private void LateUpdate()
-    {
-        transform.rotation = startRotation;
-    }
-
-    public void UpdateHealthBar(int maxHealth, int currentHealth)
-    {
-        healthbarSlider.maxValue = maxHealth;
         healthbarSlider.minValue = 0;
-
-        StartCoroutine(UpdateHealthBarCoroutine(currentHealth));
     }
 
-    private IEnumerator UpdateHealthBarCoroutine(int currentHealth)
+    public void UpdateHealthBar(int currentHealth)
     {
-        float startValue = healthbarSlider.value;
-        float endValue = currentHealth;
-
-        while (healthbarSlider.value != endValue)
-        {
-            float newValue = Mathf.MoveTowards(healthbarSlider.value, endValue, Time.deltaTime / smoothSliderDuration);
-
-            healthbarSlider.value = newValue;
-            Fill.color = gradient.Evaluate(healthbarSlider.normalizedValue);
-
-            yield return null;
-        }
+        Fill.color = gradient.Evaluate(healthbarSlider.normalizedValue);
+        healthbarSlider.DOValue(currentHealth, smoothSliderDuration);
     }
 }
