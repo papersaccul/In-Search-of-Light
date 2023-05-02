@@ -36,13 +36,14 @@ public class Slime : Entity
     {
         bool slimeDie = GetComponent<Animator>().GetBool("Die");
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f), slimeDirection, 9f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -8f), slimeDirection, 9f);
 
         foreach (RaycastHit2D hit in hits)
         {
+
             if (hit.collider != null && hit.collider.gameObject != gameObject && hit.collider.gameObject != Player.Instance.gameObject)
                 slimeDirection *= -1f;
-
+            
             else MeleeAttack(slimeDirection, slimeGetDamage, slimeDie);
         }
 
@@ -73,7 +74,7 @@ public class Slime : Entity
     {
         // Debug Wall Detector Range
         Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -10f, 0f), slimeDirection * 9f);
+        Gizmos.DrawRay(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -8f, 0f), slimeDirection * 9f);
     }
 
     public void OnCollisionEnter2D(Collision2D collision)

@@ -112,6 +112,15 @@ public class Entity : MonoBehaviour
         }
     }
 
+    protected virtual void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Dropped"))
+        {
+            entityHealth += 1f;
+            Destroy(other.gameObject);
+        }
+    }
+
     protected virtual void EntityDie()
     {
         Destroy(this.gameObject);

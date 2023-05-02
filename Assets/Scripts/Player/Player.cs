@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
     private CapsuleCollider2D ObjCapsule;
+    private GameObject pieceOfLightPrefab;
 
     public static Player Instance { get; set; }
 
@@ -71,6 +72,8 @@ public class Player : MonoBehaviour
         ObjSprite = GetComponentInChildren<SpriteRenderer>();
         isRecharged = true;
         ObjCapsule = GetComponentInChildren<CapsuleCollider2D>();
+
+        pieceOfLightPrefab = Resources.Load<GameObject>("PieceofLight");
 
         colliderSize = ObjCapsule.size;
 
@@ -185,6 +188,7 @@ public class Player : MonoBehaviour
     {
         if (!isGetDamage)
         {
+
             playerHealth -= damage;
             isGetDamage = true;
             State = States.getDamage;
@@ -194,6 +198,16 @@ public class Player : MonoBehaviour
             Vector2 deltaPosition = transform.position - attackPosition;
 
             Vector2 impulse = (deltaPosition + new Vector2(0f, 10f)).normalized * 35f;
+
+            int pieceCount = Random.Range(damage / 2, damage);
+
+            foreach (int i in Enumerable.Range(0, pieceCount))
+            {
+                GameObject pieceOfLight = Instantiate(pieceOfLightPrefab, transform.position + new Vector3(0, 20f, 0), Quaternion.identity);
+
+                Vector2 direction = new Vector2(Random.Range(-1f, 1f), Random.Range(0.5f, 1f)).normalized;
+                pieceOfLight.GetComponent<Rigidbody2D>().AddForce(direction * 10f);
+            }
 
             ObjRigidbody.AddForce(impulse, ForceMode2D.Impulse);
 

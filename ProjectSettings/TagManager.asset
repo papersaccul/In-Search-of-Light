@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Ground
   - Slope
+  - Enemy
+  - Dropped
   layers:
   - Default
   - TransparentFX
@@ -16,7 +18,7 @@ TagManager:
   - Ground
   - player
   - enemyEntity
-  - 
+  - dropped
   - Light
   - 
   - 

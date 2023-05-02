@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 1148018930996896076}
   - component: {fileID: 6886937804830437520}
   - component: {fileID: 2431619378970869530}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PieceofLight
-  m_TagString: Untagged
+  m_TagString: Dropped
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -252,10 +252,10 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 384
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 384
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
