@@ -28,6 +28,7 @@ public partial class Player : MonoBehaviour
     private SpriteRenderer ObjSprite;
     private CapsuleCollider2D ObjCapsule;
     private GameObject pieceOfLightPrefab;
+    private GameObject lightsaberPrefab;
 
     public static Player Instance { get; set; }
 
@@ -46,6 +47,7 @@ public partial class Player : MonoBehaviour
         ObjCapsule = GetComponentInChildren<CapsuleCollider2D>();
 
         pieceOfLightPrefab = Resources.Load<GameObject>("PieceofLight");
+        lightsaberPrefab = Resources.Load<GameObject>("LightSaber");
 
         colliderSize = ObjCapsule.size;
 
@@ -73,8 +75,30 @@ public partial class Player : MonoBehaviour
 
     private void Update()
     {
-        if (isGrounded && !isAttacking && !isGetDamage && Input.GetButtonDown("Fire1"))
-            PlayerAttack();
+        if (isGrounded && !isAttacking && !isGetDamage)
+        {
+            if (Input.GetButtonDown("Fire1"))
+                attackTimeCounter = 0f;
+                
+
+            if (Input.GetButton("Fire1"))
+            {
+                if (playerHealth > 15)
+                {
+                    attackTimeCounter += Time.fixedDeltaTime;
+
+                    if (attackTimeCounter >= .5f)
+                        EnhancedAttack();
+                }
+                else PlayerAttack();
+
+            }
+
+            if (Input.GetButtonUp("Fire1"))
+                if (!isEnhAttacking && attackTimeCounter < .5f)
+                    PlayerAttack();
+        }
+
 
         if (isGrounded && Input.GetButton("Jump"))
             PlayerJump();

@@ -20,10 +20,10 @@ public class Entity : MonoBehaviour
         pieceOfLightPrefab = Resources.Load<GameObject>("PieceofLight");
     }
 
-    public virtual void EntityGetDamage()
+    public virtual void EntityGetDamage(float damage)
     {
         animator = GetComponent<Animator>();
-        entityHealth -= Player.Instance.playerDamage;
+        entityHealth -= damage;
 
         if (entityHealth <= 0)
         {

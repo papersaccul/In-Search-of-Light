@@ -6,7 +6,7 @@ public partial class Player : MonoBehaviour
 {
 
     [SerializeField, Header("Ground")]
-    private bool isGrounded = false;
+                     private bool isGrounded = false;
     [SerializeField] private bool isSlope = false;
     [SerializeField] private bool slopeLeft = false;
     [SerializeField] private bool slopeRight = false;
