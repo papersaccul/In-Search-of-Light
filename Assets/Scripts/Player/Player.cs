@@ -1,10 +1,13 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.Burst.CompilerServices;
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
 public partial class Player : MonoBehaviour
@@ -14,6 +17,7 @@ public partial class Player : MonoBehaviour
     [SerializeField] public int playerMaxHealth = 20;
     [SerializeField] public float playerHealth = 10f;
     [SerializeField] private float damageGetDelay = 0.7f;
+    float oldPlayerLight;
 
     [SerializeField, Header("Slope Friction")]
     private PhysicsMaterial2D zeroFriction;
@@ -48,12 +52,15 @@ public partial class Player : MonoBehaviour
 
         pieceOfLightPrefab = Resources.Load<GameObject>("PieceofLight");
         lightsaberPrefab = Resources.Load<GameObject>("LightSaber");
+        playerLight = GetComponentInChildren<Light2D>();
 
         colliderSize = ObjCapsule.size;
 
         StartCoroutine(PlayerRegeneration());
 
         HealthBar.Instance.UpdateHealthBar(playerHealth);
+
+        oldPlayerLight = playerLight.intensity;
 
         Instance = this;
     }
@@ -79,15 +86,15 @@ public partial class Player : MonoBehaviour
         {
             if (Input.GetButtonDown("Fire1"))
                 attackTimeCounter = 0f;
-                
+
 
             if (Input.GetButton("Fire1"))
             {
-                if (playerHealth > 15)
+                if (playerHealth >= 15)
                 {
                     attackTimeCounter += Time.fixedDeltaTime;
 
-                    if (attackTimeCounter >= .5f)
+                    if (attackTimeCounter >= .4f)
                         EnhancedAttack();
                 }
                 else PlayerAttack();
@@ -95,7 +102,7 @@ public partial class Player : MonoBehaviour
             }
 
             if (Input.GetButtonUp("Fire1"))
-                if (!isEnhAttacking && attackTimeCounter < .5f)
+                if (!isEnhAttacking && attackTimeCounter < .4f)
                     PlayerAttack();
         }
 
@@ -151,7 +158,7 @@ public enum States
     jump,       // 2
     fall,       // 3
     attack1,    // 4
-    attack2,    // 5 not used
+    attackEnh,  // 5
     block,      // 6 not used
     die,        // 7 not used
     stop,       // 8    

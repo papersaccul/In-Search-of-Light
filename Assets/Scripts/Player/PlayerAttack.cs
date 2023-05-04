@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public partial class Player : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public partial class Player : MonoBehaviour
     private float attackTimeCounter;
 
     public Transform ObjAttackPosition;
+    public Light2D playerLight;
 
     private void PlayerAttack()
     {
@@ -35,25 +38,6 @@ public partial class Player : MonoBehaviour
     }
 
 
-    private void EnhancedAttack()
-    {
-        Debug.Log("Enh Attack");
-
-        playerHealth -= 5;
-        HealthBar.Instance.UpdateHealthBar(playerHealth);
-        isEnhAttacking = true;
-
-        if (isGrounded && isRecharged)
-        {
-            State = States.attack2;
-            isAttacking = true;
-            isRecharged = false;
-
-            StartCoroutine(EnhancedAttackAnimation());
-            StartCoroutine(AttackCoolDown());
-        }
-    }
-
     // Will be called by animator
     private void onAttack()
     {
@@ -68,6 +52,25 @@ public partial class Player : MonoBehaviour
             collider.GetComponent<Entity>().EntityGetDamage(playerDamage);
     }
 
+    private void EnhancedAttack()
+    {
+        Debug.Log("Enh Attack");
+
+        //playerHealth -= 5;
+        HealthBar.Instance.UpdateHealthBar(playerHealth);
+        isEnhAttacking = true;
+
+        if (isGrounded && isRecharged)
+        {
+            State = States.attackEnh;
+            isAttacking = true;
+            isRecharged = false;
+
+            StartCoroutine(EnhancedAttackAnimation());
+            StartCoroutine(AttackCoolDown());
+        }
+    }
+
     private IEnumerator AttackAnimation()
     {
         yield return new WaitForSeconds(0.41f);
@@ -76,23 +79,26 @@ public partial class Player : MonoBehaviour
 
     private IEnumerator EnhancedAttackAnimation()
     {
-        float swordOffsetX;
+        float saberOffsetX = ObjSprite.flipX ? -7f : +7f;
+        DOTween.To(() => playerLight.intensity, x => playerLight.intensity = x, 25f, .3f);
 
-        swordOffsetX = ObjSprite.flipX ? -8.5f : +8.5f;
-        ObjAttackPosition.position = new Vector3(ObjRigidbody.position.x + swordOffsetX, ObjAttackPosition.position.y, 0f);
+        yield return new WaitForSeconds(.3f);
 
-        GameObject newSaber = Instantiate(lightsaberPrefab, ObjAttackPosition.position, Quaternion.identity);
-
+        DOTween.To(() => playerLight.intensity, x => playerLight.intensity = x, oldPlayerLight, .3f);
+        GameObject newSaber = Instantiate(lightsaberPrefab, new Vector3(ObjAttackPosition.position.x + saberOffsetX, ObjAttackPosition.position.y, 0f), Quaternion.identity);
         newSaber.GetComponent<Rigidbody2D>().AddForce(ObjSprite.flipX ? Vector2.left * 1000f : Vector2.right * 1000f);
+        newSaber.transform.right *= ObjSprite.flipX ? -1f : 1f;
 
-        yield return new WaitForSeconds(0.41f);
+        yield return new WaitForSeconds(.3f);
+
+        
         isEnhAttacking = false;
         isAttacking = false;
     }
 
     private IEnumerator AttackCoolDown()
     {
-        yield return new WaitForSeconds(0.65f);
+        yield return new WaitForSeconds(.7f);
         isRecharged = true;
     }
 }
