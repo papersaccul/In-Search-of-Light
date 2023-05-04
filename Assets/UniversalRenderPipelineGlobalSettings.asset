@@ -15,7 +15,8 @@ MonoBehaviour:
   k_AssetVersion: 3
   m_RenderingLayerNames:
   - Default
-  m_ValidRenderingLayers: 1
+  - _CameraSortingLayerTexture
+  m_ValidRenderingLayers: 3
   lightLayerName0: 
   lightLayerName1: 
   lightLayerName2: 
