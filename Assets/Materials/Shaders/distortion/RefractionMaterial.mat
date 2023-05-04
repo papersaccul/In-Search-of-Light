@@ -50,14 +50,15 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 0
-    - _Count: 3
+    - _Count: 2.75
     - _QueueControl: 0
     - _QueueOffset: 0
     - _normal: 0.01
-    - _speed: 1
-    - _strengh: 1
+    - _speed: 3.2
+    - _strengh: 0
     m_Colors:
     - _Center: {r: 0, g: 0, b: 0, a: 0}
+    - _center2: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &1454791903415989316
 MonoBehaviour:
