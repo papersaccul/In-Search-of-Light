@@ -22,7 +22,7 @@ public partial class Player : MonoBehaviour
 
         // Slope
         else if (isGrounded && isSlope)
-            ObjRigidbody.velocity = new Vector2(SlopeNormalPerpendicular.x * -targetVelocityX, SlopeNormalPerpendicular.y * -newVelocityX);
+            ObjRigidbody.velocity = new Vector2(SlopeNormalPerpendicular.x * -targetVelocityX, SlopeNormalPerpendicular.y * -targetVelocityX);
 
         // Air
         else if (!isGrounded)

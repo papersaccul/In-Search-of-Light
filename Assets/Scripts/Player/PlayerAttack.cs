@@ -12,6 +12,7 @@ public partial class Player : MonoBehaviour
     [SerializeField] public bool isRecharged = false;
     [SerializeField] public float attackRange = 24.5f;
     [SerializeField] private bool isGetDamage = false;
+
     private float attackTimeCounter;
 
     public Transform ObjAttackPosition;
