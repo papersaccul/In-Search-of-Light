@@ -31,6 +31,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_ac5dd280dc2641239f83e597c35cf0c3_Texture_1:
+        m_Texture: {fileID: 2800000, guid: c65bee99cabf85d468ba44f35f6c3af2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_f2cd096e358c47c7a741d8a21bd0bcc8_Texture_1:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -58,10 +62,11 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _normal: 0.01
-    - _speed: 1.03
-    - _strengh: 2.27
+    - _speed: 0.37
+    - _strengh: 2.95
     m_Colors:
     - _Center: {r: 0, g: 0, b: 0, a: 0}
+    - _alpha: {r: 0, g: 0, b: 0, a: 0}
     - _center2: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &1454791903415989316

@@ -10,7 +10,7 @@ public class LightSaber : MonoBehaviour
 
     private void Start()
     {
-        lightSaber = GetComponent<Light2D>();
+        lightSaber = GetComponentInChildren<Light2D>();
 
         lightSaber.intensity = 0f;
         DOTween.To(() => lightSaber.intensity, x => lightSaber.intensity = x, 36f, .3f);

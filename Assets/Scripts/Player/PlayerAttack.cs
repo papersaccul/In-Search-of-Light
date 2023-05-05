@@ -57,7 +57,7 @@ public partial class Player : MonoBehaviour
     {
         Debug.Log("Enh Attack");
 
-        //playerHealth -= 5;
+        playerHealth -= 5;
         HealthBar.Instance.UpdateHealthBar(playerHealth);
         isEnhAttacking = true;
 
@@ -88,10 +88,10 @@ public partial class Player : MonoBehaviour
         DOTween.To(() => playerLight.intensity, x => playerLight.intensity = x, oldPlayerLight, .3f);
         GameObject newSaber = Instantiate(lightsaberPrefab, new Vector3(ObjAttackPosition.position.x + saberOffsetX, ObjAttackPosition.position.y, 0f), Quaternion.identity);
         newSaber.GetComponent<Rigidbody2D>().AddForce(ObjSprite.flipX ? Vector2.left * 1000f : Vector2.right * 1000f);
-        newSaber.transform.right *= ObjSprite.flipX ? -1f : 1f;
+
+        newSaber.GetComponentInChildren<Light2D>().transform.right *= ObjSprite.flipX ? -1f : 1f;
 
         yield return new WaitForSeconds(.3f);
-
         
         isEnhAttacking = false;
         isAttacking = false;
