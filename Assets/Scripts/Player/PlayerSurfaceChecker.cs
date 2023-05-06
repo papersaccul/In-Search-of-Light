@@ -93,7 +93,13 @@ public partial class Player : MonoBehaviour
         }
 
         if (isGrounded)
-            ObjRigidbody.sharedMaterial = Input.GetButton("Horizontal") || isGetDamage ? zeroFriction : fullFriction;
+        {
+            if (isSlope && !Input.GetButton("Horizontal"))
+                ObjRigidbody.sharedMaterial = fullFriction;
+
+            else ObjRigidbody.sharedMaterial = Input.GetButton("Horizontal") || isGetDamage ? zeroFriction : mediumFriction;
+        }
+
         Debug.Log(SlopeNormalPerpendicular);
     }
 
