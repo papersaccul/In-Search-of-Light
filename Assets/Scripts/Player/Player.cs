@@ -20,7 +20,8 @@ public partial class Player : MonoBehaviour
     float oldPlayerLight;
 
     [SerializeField, Header("Slope Friction")]
-    private PhysicsMaterial2D zeroFriction;
+                     private PhysicsMaterial2D zeroFriction;
+    [SerializeField] private PhysicsMaterial2D mediumFriction;
     [SerializeField] private PhysicsMaterial2D fullFriction;
 
     [SerializeField, Header("Layers")]
@@ -147,6 +148,20 @@ public partial class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(damageGetDelay);
         isGetDamage = false;
+    }
+
+    private IEnumerator PlayerRegeneration()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f);
+
+            if (!isGetDamage && playerHealth < 10)
+            {
+                playerHealth++;
+                HealthBar.Instance.UpdateHealthBar(playerHealth);
+            }
+        }
     }
 
 }

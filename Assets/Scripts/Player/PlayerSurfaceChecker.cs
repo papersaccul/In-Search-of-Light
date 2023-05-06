@@ -94,6 +94,7 @@ public partial class Player : MonoBehaviour
 
         if (isGrounded)
             ObjRigidbody.sharedMaterial = Input.GetButton("Horizontal") || isGetDamage ? zeroFriction : fullFriction;
+        Debug.Log(SlopeNormalPerpendicular);
     }
 
     // Debug Ground Checker
@@ -113,18 +114,4 @@ public partial class Player : MonoBehaviour
         Gizmos.DrawWireCube(currentPosition - new Vector2(-1.1f, boxSize.y / 2f), boxSize);
     }
 
-
-    private IEnumerator PlayerRegeneration()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(5f);
-
-            if (!isGetDamage && playerHealth < 10)
-            {
-                playerHealth++;
-                HealthBar.Instance.UpdateHealthBar(playerHealth);
-            }
-        }
-    }
 }

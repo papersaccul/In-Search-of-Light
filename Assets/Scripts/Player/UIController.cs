@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MoveUI : MonoBehaviour
+public class UIController : MonoBehaviour
 {
     [SerializeField] private Vector2 offset = new Vector2(5f, -10f);
     [SerializeField] private float moveSpeed = 5f;
