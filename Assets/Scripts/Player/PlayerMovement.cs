@@ -16,12 +16,18 @@ public partial class Player : MonoBehaviour
         float smoothTime = 3f;
         float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.deltaTime);
 
+        // anim
+        if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && ObjSprite.flipX != targetVelocityX < 0f)
+            State = States.rotate;
+        else if ((Mathf.Abs(currentVelocityX) > 5f)) State = States.run;
+        ObjSprite.flipX = targetVelocityX < 0f;
+
         // Ground
-        if (isGrounded && !isSlope)
+        if (isGrounded && !isSlope && !isWall)
             ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
 
         // Slope
-        else if (isGrounded && isSlope)
+        else if (isGrounded && isSlope && !isWall)
         {
             if (Input.GetButton("Jump"))
                 ObjRigidbody.velocity = new Vector2(SlopeNormalPerpendicular.x * -targetVelocityX, playerJumpForce);
@@ -30,15 +36,9 @@ public partial class Player : MonoBehaviour
         }
 
         // Air
-        else if (!isGrounded)
+        else if (!isGrounded && !isWall)
             ObjRigidbody.velocity = new Vector2(newVelocityX, ObjRigidbody.velocity.y);
-
-        // anim
-        if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && ObjSprite.flipX != targetVelocityX < 0f)
-            State = States.rotate;
-
-        else if ((Mathf.Abs(currentVelocityX) > 5f)) State = States.run;
-        ObjSprite.flipX = targetVelocityX < 0f;
+        
     }
 
     private void PlayerJump()

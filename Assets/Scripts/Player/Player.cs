@@ -18,11 +18,7 @@ public partial class Player : MonoBehaviour
     [SerializeField] public float playerHealth = 10f;
     [SerializeField] private float damageGetDelay = 0.7f;
     float oldPlayerLight;
-
-    [SerializeField, Header("Slope Friction")]
-                     private PhysicsMaterial2D zeroFriction;
-    [SerializeField] private PhysicsMaterial2D mediumFriction;
-    [SerializeField] private PhysicsMaterial2D fullFriction;
+    
 
     [SerializeField, Header("Layers")]
     public LayerMask enemyEntity;
@@ -79,6 +75,7 @@ public partial class Player : MonoBehaviour
 
         IsGroundChecker();
         SlopeChecker();
+        WallChecker();
     }
 
     private void Update()
