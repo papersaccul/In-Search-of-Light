@@ -117,12 +117,10 @@ public partial class Player : MonoBehaviour
         Vector2 currentPosition = transform.position;
         Vector2 boxSize = new(2f, 0.1f);
 
-        if (leftFeet) Gizmos.color = Color.green;
-        else Gizmos.color = Color.red;
+        Gizmos.color = leftFeet ? Color.green : Color.red;
         Gizmos.DrawWireCube(currentPosition - new Vector2(1.1f, boxSize.y / 2f), boxSize);
 
-        if (rightFeet) Gizmos.color = Color.green;
-        else Gizmos.color = Color.red;
+        Gizmos.color = rightFeet ? Color.green : Color.red;
         Gizmos.DrawWireCube(currentPosition - new Vector2(-1.1f, boxSize.y / 2f), boxSize);
     }
 

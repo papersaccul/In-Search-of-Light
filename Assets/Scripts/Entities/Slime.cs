@@ -36,7 +36,7 @@ public class Slime : Entity
     {
         bool slimeDie = GetComponent<Animator>().GetBool("Die");
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -8f), slimeDirection, 9f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -15f), slimeDirection, 9f);
 
         foreach (RaycastHit2D hit in hits)
         {
@@ -74,7 +74,7 @@ public class Slime : Entity
     {
         // Debug Wall Detector Range
         Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -8f, 0f), slimeDirection * 9f);
+        Gizmos.DrawRay(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -15f, 0f), slimeDirection * 9f);
     }
 
     public void OnCollisionEnter2D(Collision2D collision)

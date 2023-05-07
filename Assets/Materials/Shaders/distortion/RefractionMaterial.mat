@@ -63,7 +63,7 @@ Material:
     - _QueueOffset: 0
     - _normal: 0.01
     - _speed: 0.37
-    - _strengh: 2.95
+    - _strengh: 0
     m_Colors:
     - _Center: {r: 0, g: 0, b: 0, a: 0}
     - _alpha: {r: 0, g: 0, b: 0, a: 0}

@@ -69,18 +69,28 @@ public class Entity : MonoBehaviour
         animator = GetComponent<Animator>();
         ObjRigidbody = GetComponent<Rigidbody2D>();
 
+        Vector2 boxSize = new Vector2(12f, 1.5f);
+
         Vector2 currentPosition = transform.position;
-        Vector2 direction = Vector2.down;
-        float distance = 16f;
+        Vector2 boxOrigin = currentPosition - new Vector2(0f, 15f);
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(currentPosition, direction, distance);
+        Collider2D[] hits = Physics2D.OverlapBoxAll(boxOrigin, boxSize, 0f);
+           
 
-        foreach (RaycastHit2D hit in hits)
-            isGrounded = (hit.collider != null && hit.collider.gameObject != gameObject);
-
-        if (!isGrounded && !(entityHealth <= 0) )
+        foreach (Collider2D hit in hits)
         {
-            if (ObjRigidbody.velocity.y < 0)
+            isGrounded = hit != null && hit.gameObject != gameObject;
+
+            if (hit != null && hit.gameObject != gameObject)
+            {
+                isGrounded = true;
+                break;
+            }
+        }
+
+        if (!isGrounded && !(entityHealth <= 0))
+        {
+            if (ObjRigidbody.velocity.y < 0f)
             {
                 animator.SetBool("Fall", true);
                 animator.SetBool("Jump", false);
