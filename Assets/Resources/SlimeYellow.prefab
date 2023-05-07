@@ -246,6 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDamage: 2
   slimeSpeed: 25
+  sightRadius: 50
   player:
     serializedVersion: 2
     m_Bits: 128

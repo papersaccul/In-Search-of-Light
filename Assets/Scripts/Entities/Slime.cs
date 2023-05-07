@@ -36,6 +36,11 @@ public class Slime : Entity
     {
         bool slimeDie = GetComponent<Animator>().GetBool("Die");
 
+        Vector3 playerDirection = Player.Instance.transform.position - transform.position;
+
+        if (playerDirection.magnitude < 100f)
+            slimeDirection.x = Mathf.Sign(playerDirection.x);
+
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position + transform.up + transform.right * slimeDirection.x + new Vector3(0f, -15f), slimeDirection, 9f);
 
         foreach (RaycastHit2D hit in hits)
@@ -43,7 +48,7 @@ public class Slime : Entity
 
             if (hit.collider != null && hit.collider.gameObject != gameObject && hit.collider.gameObject != Player.Instance.gameObject)
                 slimeDirection *= -1f;
-            
+
             else MeleeAttack(slimeDirection, slimeGetDamage, slimeDie);
         }
 
