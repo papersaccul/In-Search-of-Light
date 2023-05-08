@@ -18,6 +18,7 @@ public class Entity : MonoBehaviour
     private void Start()
     {
         pieceOfLightPrefab = Resources.Load<GameObject>("PieceofLight");
+        ObjRigidbody = GetComponent<Rigidbody2D>();
     }
 
     public virtual void EntityGetDamage(float damage)
@@ -36,6 +37,8 @@ public class Entity : MonoBehaviour
         }
 
         else animator.SetBool("Hurt", true);
+
+        KnockBack(Player.Instance.transform.position);
     }
 
     public virtual void ToggleGetDamage()
@@ -67,7 +70,6 @@ public class Entity : MonoBehaviour
     protected virtual void IsGroundChecker()
     {
         animator = GetComponent<Animator>();
-        ObjRigidbody = GetComponent<Rigidbody2D>();
 
         Vector2 boxSize = new Vector2(12f, 1.5f);
 
@@ -120,6 +122,17 @@ public class Entity : MonoBehaviour
             Vector2 direction = new Vector2(Random.Range(-1f, 1f), Random.Range(0.5f, 1f)).normalized;
             pieceOfLight.GetComponent<Rigidbody2D>().AddForce(direction * 7f);
         }
+    }
+
+    public virtual void KnockBack(Vector3 attackPosition)
+    {
+        ObjRigidbody.velocity = Vector2.zero;
+
+        Vector2 deltaPosition = transform.position - attackPosition;
+
+        Vector2 impulse = (deltaPosition + new Vector2(0f, 10f)).normalized * 35f;
+
+        ObjRigidbody.AddForce(impulse, ForceMode2D.Impulse);
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D other)

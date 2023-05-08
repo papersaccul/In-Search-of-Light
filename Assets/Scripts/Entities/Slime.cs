@@ -69,7 +69,7 @@ public class Slime : Entity
 
 
             foreach (Collider2D collider in colliders)
-                collider.GetComponent<Player>().PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position);
+                collider.GetComponent<Player>().PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position, this);
         }
     }
 
@@ -86,7 +86,7 @@ public class Slime : Entity
     {
         if (collision.gameObject == Player.Instance.gameObject)
         {
-            Player.Instance.PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position);
+            Player.Instance.PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position, this);
         }
     }
 }

@@ -17,6 +17,7 @@ public partial class Player : MonoBehaviour
     [SerializeField] public int playerMaxHealth = 20;
     [SerializeField] public float playerHealth = 10f;
     [SerializeField] private float damageGetDelay = 0.7f;
+    [SerializeField] public bool isBlocking;
     float oldPlayerLight;
     
 
@@ -110,11 +111,10 @@ public partial class Player : MonoBehaviour
     }
 
 
-    public void PlayerGetDamage(int damage, Vector3 attackPosition)
+    public void PlayerGetDamage(int damage, Vector3 attackPosition, Entity entityInstance)
     {
-        if (!isGetDamage)
+        if (!isGetDamage && !isBlocking)
         {
-
             playerHealth -= damage;
             isGetDamage = true;
             State = States.getDamage;
@@ -138,6 +138,10 @@ public partial class Player : MonoBehaviour
             ObjRigidbody.AddForce(impulse, ForceMode2D.Impulse);
 
             StartCoroutine(ResetGetsDamageState());
+        }
+        else if (isBlocking)
+        {
+            entityInstance.KnockBack(transform.position);
         }
     }
 
