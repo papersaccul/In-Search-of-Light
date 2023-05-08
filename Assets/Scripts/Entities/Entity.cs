@@ -56,12 +56,12 @@ public class Entity : MonoBehaviour
                 isPlayerInSight = true;
 
                 if (!isGetDamage && !isDie)
-                    GetComponent<Animator>().SetBool("Attack", true);
+                    animator.SetBool("Attack", true);
             }
             else
             {
                 isPlayerInSight = false;
-                GetComponent<Animator>().SetBool("Attack", false);
+                animator.SetBool("Attack", false);
             }
 
         return isPlayerInSight;

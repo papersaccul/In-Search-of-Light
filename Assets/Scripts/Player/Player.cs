@@ -18,8 +18,10 @@ public partial class Player : MonoBehaviour
     [SerializeField] public float playerHealth = 10f;
     [SerializeField] private float damageGetDelay = 0.7f;
     [SerializeField] public bool isBlocking;
-    float oldPlayerLight;
-    
+    private float oldPlayerLight;
+    [SerializeField] private float blockStamina = 5f;
+    private bool blockLock = false;
+    private bool isBlockingStarted = false;
 
     [SerializeField, Header("Layers")]
     public LayerMask enemyEntity;
@@ -81,7 +83,7 @@ public partial class Player : MonoBehaviour
 
     private void Update()
     {
-        if (isGrounded && !isAttacking && !isGetDamage)
+        if (isGrounded && !isAttacking && !isGetDamage && !isBlocking)
         {
             if (Input.GetButtonDown("Fire1"))
                 attackTimeCounter = 0f;
@@ -105,16 +107,52 @@ public partial class Player : MonoBehaviour
                     PlayerAttack();
         }
 
+        if (Input.GetButton("Fire2") && !blockLock)
+            PlayerBlock();
+        else if (blockStamina < 5f)
+            blockStamina += Time.deltaTime;
+
+
+        if (Input.GetButtonUp("Fire2"))
+        {
+            isBlocking = false;
+        }
+            
 
         if (isGrounded && Input.GetButton("Jump"))
             PlayerJump();
     }
 
-
-    public void PlayerGetDamage(int damage, Vector3 attackPosition, Entity entityInstance)
+    private void PlayerBlock()
     {
-        if (!isGetDamage && !isBlocking)
+        if (!Input.GetButton("Horizontal"))
         {
+            if (blockStamina > 0)
+                blockStamina -= Time.deltaTime;
+
+            if (blockStamina > 1)
+            {
+                isBlocking = isGrounded;
+
+                if (isBlocking)
+                    State = States.block;
+            }
+
+        }
+        else isBlocking = false;
+    }
+
+    public void PlayerGetDamage(int damage, Vector3 attackPosition, Entity entityInstance, bool isAttackingFromRight)
+    {
+        if (isBlocking && ((isAttackingFromRight && ObjSprite.flipX) || (!isAttackingFromRight && !ObjSprite.flipX)))
+        {
+            entityInstance.KnockBack(transform.position);
+            blockStamina = 0f;
+        }
+
+        else if (!isGetDamage)
+        {
+            blockStamina = 0f;
             playerHealth -= damage;
             isGetDamage = true;
             State = States.getDamage;
@@ -138,10 +176,6 @@ public partial class Player : MonoBehaviour
             ObjRigidbody.AddForce(impulse, ForceMode2D.Impulse);
 
             StartCoroutine(ResetGetsDamageState());
-        }
-        else if (isBlocking)
-        {
-            entityInstance.KnockBack(transform.position);
         }
     }
 
@@ -175,7 +209,7 @@ public enum States
     fall,       // 3
     attack1,    // 4
     attackEnh,  // 5
-    block,      // 6 not used
+    block,      // 6 
     die,        // 7 not used
     stop,       // 8    
     rotate,     // 9      

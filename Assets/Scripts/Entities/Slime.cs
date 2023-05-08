@@ -63,13 +63,13 @@ public class Slime : Entity
     {
         if (isPlayerInSight)
         {
+            bool isAttackingFromRight = transform.position.x < Player.Instance.transform.position.x;
             attackPosition.position = new Vector3(GetComponent<Rigidbody2D>().position.x, attackPosition.position.y, 0f);
 
             Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPosition.position, 10f, player);
 
-
             foreach (Collider2D collider in colliders)
-                collider.GetComponent<Player>().PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position, this);
+                collider.GetComponent<Player>().PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position, this, isAttackingFromRight);
         }
     }
 
@@ -86,7 +86,9 @@ public class Slime : Entity
     {
         if (collision.gameObject == Player.Instance.gameObject)
         {
-            Player.Instance.PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position, this);
+            bool isAttackingFromRight = transform.position.x < Player.Instance.transform.position.x;
+
+            Player.Instance.PlayerGetDamage(attackDamage, GetComponent<Rigidbody2D>().position, this, isAttackingFromRight);
         }
     }
 }
