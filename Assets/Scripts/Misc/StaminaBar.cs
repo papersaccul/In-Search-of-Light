@@ -11,7 +11,7 @@ public class StaminaBar : MonoBehaviour
     public Slider staminaSlider;
     public Gradient gradient;
     public Image Fill;
-    private float smoothSliderDuration = 1f;
+    private float smoothSliderDuration = .5f;
 
 
     private void Awake()

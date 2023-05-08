@@ -19,6 +19,7 @@ public partial class Player : MonoBehaviour
     [SerializeField] private float damageGetDelay = 0.7f;
     [SerializeField] public bool isBlocking;
     private float oldPlayerLight;
+    private bool isStaminaRegen = true;
     [SerializeField] private float playerStamina = 5f;
 
     [SerializeField, Header("Layers")]
@@ -107,38 +108,36 @@ public partial class Player : MonoBehaviour
                     PlayerAttack();
         }
 
-        if (Input.GetButton("Fire2") && playerStamina > 1)
+        if (Input.GetButton("Fire2") && playerStamina > 0 && isStaminaRegen)
             PlayerBlock();
 
         if (Input.GetButtonUp("Fire2"))
         {
             isBlocking = false;
+            isStaminaRegen = true;
         }
             
-
         if (isGrounded && Input.GetButton("Jump") && playerStamina > 1f)
             PlayerJump();
     }
 
     private void PlayerBlock()
     {
-        if (!Input.GetButton("Horizontal"))
+        if (playerStamina < .5)
+            isStaminaRegen = false;
+
+        if (!Input.GetButton("Horizontal") && isStaminaRegen && playerStamina > 0f)
         {
-            StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
+            playerStamina -= Time.deltaTime;
 
-            if (playerStamina > 0)
-                playerStamina -= Time.deltaTime;
+            isBlocking = isGrounded;
 
-            if (playerStamina > 1)
-            {
-                isBlocking = isGrounded;
-
-                if (isBlocking)
-                    State = States.block;
-            }
-
+            if (isBlocking)
+                State = States.block;
         }
         else isBlocking = false;
+
+        StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
     }
 
     public void PlayerGetDamage(int damage, Vector3 attackPosition, Entity entityInstance, bool isAttackingFromRight)
@@ -146,12 +145,18 @@ public partial class Player : MonoBehaviour
         if (isBlocking && ((isAttackingFromRight && ObjSprite.flipX) || (!isAttackingFromRight && !ObjSprite.flipX)))
         {
             entityInstance.KnockBack(transform.position);
-            playerStamina = 0f;
+            playerStamina /= 2f;
+            StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
         }
 
         else if (!isGetDamage)
         {
-            playerStamina = 0f;
+            if (isBlocking)
+            {
+                playerStamina = 0f;
+                StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
+            }
+
             playerHealth -= damage;
             isGetDamage = true;
             State = States.getDamage;
@@ -202,10 +207,10 @@ public partial class Player : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.5f);
 
             if (!isBlocking && playerStamina < 5f)
-                playerStamina++;
+                playerStamina += .5f;
 
             if (playerStamina > 5f) playerStamina = 5f;
 
