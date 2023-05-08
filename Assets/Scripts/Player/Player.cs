@@ -19,9 +19,7 @@ public partial class Player : MonoBehaviour
     [SerializeField] private float damageGetDelay = 0.7f;
     [SerializeField] public bool isBlocking;
     private float oldPlayerLight;
-    [SerializeField] private float blockStamina = 5f;
-    private bool blockLock = false;
-    private bool isBlockingStarted = false;
+    [SerializeField] private float playerStamina = 5f;
 
     [SerializeField, Header("Layers")]
     public LayerMask enemyEntity;
@@ -57,8 +55,10 @@ public partial class Player : MonoBehaviour
         colliderSize = ObjCapsule.size;
 
         StartCoroutine(PlayerRegeneration());
+        StartCoroutine(PlayerStaminaRegeneration());
 
         HealthBar.Instance.UpdateHealthBar(playerHealth);
+        StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
 
         oldPlayerLight = playerLight.intensity;
 
@@ -107,11 +107,8 @@ public partial class Player : MonoBehaviour
                     PlayerAttack();
         }
 
-        if (Input.GetButton("Fire2") && !blockLock)
+        if (Input.GetButton("Fire2"))
             PlayerBlock();
-        else if (blockStamina < 5f)
-            blockStamina += Time.deltaTime;
-
 
         if (Input.GetButtonUp("Fire2"))
         {
@@ -127,10 +124,12 @@ public partial class Player : MonoBehaviour
     {
         if (!Input.GetButton("Horizontal"))
         {
-            if (blockStamina > 0)
-                blockStamina -= Time.deltaTime;
+            StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
 
-            if (blockStamina > 1)
+            if (playerStamina > 0)
+                playerStamina -= Time.deltaTime;
+
+            if (playerStamina > 1)
             {
                 isBlocking = isGrounded;
 
@@ -147,12 +146,12 @@ public partial class Player : MonoBehaviour
         if (isBlocking && ((isAttackingFromRight && ObjSprite.flipX) || (!isAttackingFromRight && !ObjSprite.flipX)))
         {
             entityInstance.KnockBack(transform.position);
-            blockStamina = 0f;
+            playerStamina = 0f;
         }
 
         else if (!isGetDamage)
         {
-            blockStamina = 0f;
+            playerStamina = 0f;
             playerHealth -= damage;
             isGetDamage = true;
             State = States.getDamage;
@@ -196,6 +195,21 @@ public partial class Player : MonoBehaviour
                 playerHealth++;
                 HealthBar.Instance.UpdateHealthBar(playerHealth);
             }
+        }
+    }
+
+    private IEnumerator PlayerStaminaRegeneration()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+
+            if (!isBlocking && playerStamina < 5f)
+                playerStamina++;
+
+            if (playerStamina > 5f) playerStamina = 5f;
+
+            StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
         }
     }
 
