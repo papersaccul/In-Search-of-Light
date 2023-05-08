@@ -83,7 +83,7 @@ public partial class Player : MonoBehaviour
 
     private void Update()
     {
-        if (isGrounded && !isAttacking && !isGetDamage && !isBlocking)
+        if (isGrounded && !isAttacking && !isGetDamage && !isBlocking && playerStamina > 1f)
         {
             if (Input.GetButtonDown("Fire1"))
                 attackTimeCounter = 0f;
@@ -107,7 +107,7 @@ public partial class Player : MonoBehaviour
                     PlayerAttack();
         }
 
-        if (Input.GetButton("Fire2"))
+        if (Input.GetButton("Fire2") && playerStamina > 1)
             PlayerBlock();
 
         if (Input.GetButtonUp("Fire2"))
@@ -116,7 +116,7 @@ public partial class Player : MonoBehaviour
         }
             
 
-        if (isGrounded && Input.GetButton("Jump"))
+        if (isGrounded && Input.GetButton("Jump") && playerStamina > 1f)
             PlayerJump();
     }
 

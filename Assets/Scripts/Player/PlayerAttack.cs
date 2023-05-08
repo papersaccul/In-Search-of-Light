@@ -22,6 +22,9 @@ public partial class Player : MonoBehaviour
     {
         if (isGrounded && isRecharged)
         {
+            playerStamina -= 2f;
+            StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
+
             State = States.attack1;
             isAttacking = true;
             isRecharged = false;
@@ -57,8 +60,12 @@ public partial class Player : MonoBehaviour
     {
         Debug.Log("Enh Attack");
 
+        playerStamina = 0f;
+        StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
+
         playerHealth -= 5;
         HealthBar.Instance.UpdateHealthBar(playerHealth);
+
         isEnhAttacking = true;
 
         if (isGrounded && isRecharged)

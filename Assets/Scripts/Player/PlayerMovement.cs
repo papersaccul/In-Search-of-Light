@@ -43,6 +43,9 @@ public partial class Player : MonoBehaviour
 
     private void PlayerJump()
     {
+        playerStamina -= 0.5f;
+        StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
+
         float clampedVerticalSpeed = Mathf.Clamp(ObjRigidbody.velocity.y, -playerMaxJumpHeight, playerMaxJumpHeight);
 
         ObjRigidbody.velocity = new Vector2(ObjRigidbody.velocity.x, clampedVerticalSpeed);
