@@ -80,6 +80,8 @@ public partial class Player : MonoBehaviour
         IsGroundChecker();
         SlopeChecker();
         WallChecker();
+
+        if (doubleJumpLock && isGrounded) doubleJumpLock = false;
     }
 
     private void Update()
@@ -116,9 +118,9 @@ public partial class Player : MonoBehaviour
             isBlocking = false;
             isStaminaRegen = true;
         }
-            
-        if (isGrounded && Input.GetButton("Jump") && playerStamina > 1f)
-            PlayerJump();
+
+        if (Input.GetButtonDown("Jump") && playerStamina > 1f)
+            PlayerJump();            
     }
 
     private void PlayerBlock()

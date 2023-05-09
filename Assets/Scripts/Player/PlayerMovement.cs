@@ -6,7 +6,7 @@ public partial class Player : MonoBehaviour
 {
     [SerializeField, Header("Movement")]
                      private float playerSpeedMultiplier = 55f;
-    [SerializeField] private float playerJumpForce = 50f;
+    [SerializeField] private float playerJumpForce = 85f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
 
     private void PlayerRun()
@@ -41,15 +41,24 @@ public partial class Player : MonoBehaviour
         
     }
 
+    private bool doubleJumpLock = false;
+
     private void PlayerJump()
     {
-        playerStamina -= 0.5f;
-        StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
+        if (isGrounded || !doubleJumpLock)
+        {
+            playerStamina -= 0.5f;
+            StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
 
-        float clampedVerticalSpeed = Mathf.Clamp(ObjRigidbody.velocity.y, -playerMaxJumpHeight, playerMaxJumpHeight);
+            float clampedVerticalSpeed = Mathf.Clamp(ObjRigidbody.velocity.y, -playerMaxJumpHeight, playerMaxJumpHeight);
 
-        ObjRigidbody.velocity = new Vector2(ObjRigidbody.velocity.x, clampedVerticalSpeed);
+            ObjRigidbody.velocity = new Vector2(ObjRigidbody.velocity.x, clampedVerticalSpeed);
 
-        ObjRigidbody.AddForce(Vector2.up * playerJumpForce, ForceMode2D.Impulse);
+            ObjRigidbody.AddForce(Vector2.up * playerJumpForce, ForceMode2D.Impulse);
+
+            if (!isGrounded)
+                doubleJumpLock = true;
+            else doubleJumpLock = false;
+        }
     }
 }
