@@ -45,16 +45,27 @@ public partial class Player : MonoBehaviour
 
     private void PlayerJump()
     {
-        if (isGrounded || !doubleJumpLock)
+        float jumpForce = playerJumpForce;
+
+        if (isGrounded || (!doubleJumpLock && playerHealth >= 11f) )
         {
-            playerStamina -= 0.5f;
-            StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
+            if (isGrounded)
+            {
+                playerStamina -= 0.5f;
+                StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
+                jumpForce -= 10f;
+            }
+            else
+            {
+                playerHealth -= 1f;
+                HealthBar.Instance.UpdateHealthBar(playerHealth);
+            }
 
             float clampedVerticalSpeed = Mathf.Clamp(ObjRigidbody.velocity.y, -playerMaxJumpHeight, playerMaxJumpHeight);
 
             ObjRigidbody.velocity = new Vector2(ObjRigidbody.velocity.x, clampedVerticalSpeed);
 
-            ObjRigidbody.AddForce(Vector2.up * playerJumpForce, ForceMode2D.Impulse);
+            ObjRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
             if (!isGrounded)
                 doubleJumpLock = true;
