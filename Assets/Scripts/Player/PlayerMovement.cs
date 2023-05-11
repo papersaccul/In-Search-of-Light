@@ -59,6 +59,7 @@ public partial class Player : MonoBehaviour
             {
                 playerHealth -= 1f;
                 HealthBar.Instance.UpdateHealthBar(playerHealth);
+                ParticleConroller.Instance.DoubleJump();
             }
 
             float clampedVerticalSpeed = Mathf.Clamp(ObjRigidbody.velocity.y, -playerMaxJumpHeight, playerMaxJumpHeight);
