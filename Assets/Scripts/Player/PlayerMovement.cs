@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public partial class Player : MonoBehaviour
@@ -8,6 +9,14 @@ public partial class Player : MonoBehaviour
                      private float playerSpeedMultiplier = 55f;
     [SerializeField] private float playerJumpForce = 85f;
     [SerializeField] private float playerMaxJumpHeight = 30f;
+
+    private bool canDash = true;
+    private bool isDashing = false;
+    private float dashCoolDown = 1f;
+    private float dashDuration = .1f;
+    private float dashSpeed = 200f;
+
+    [SerializeField] private TrailRenderer trailRenderer;
 
     private void PlayerRun()
     {
@@ -72,5 +81,28 @@ public partial class Player : MonoBehaviour
                 doubleJumpLock = true;
             else doubleJumpLock = false;
         }
+    }
+
+    private IEnumerator PlayerDash(float direction)
+    {
+        float defaultGravity = ObjRigidbody.gravityScale;
+
+        ObjRigidbody.gravityScale = 0f;
+        ObjRigidbody.velocity = new Vector2(dashSpeed * Mathf.Sign(direction), 0f);
+        Debug.Log(direction);
+
+        canDash = false;
+        isDashing = true;
+        trailRenderer.emitting = true;
+
+        yield return new WaitForSeconds(dashDuration);
+
+        isDashing = false;
+        ObjRigidbody.gravityScale = defaultGravity;
+        trailRenderer.emitting = false;
+
+        yield return new WaitForSeconds(dashCoolDown);
+
+        canDash = true;
     }
 }

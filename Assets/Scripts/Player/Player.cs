@@ -21,6 +21,8 @@ public partial class Player : MonoBehaviour
     private float oldPlayerLight;
     private bool isStaminaRegen = true;
     [SerializeField] private float playerStamina = 5f;
+    private float timeBetweenClicks = .2f;
+    private float firstClickTime = 0f;
 
     [SerializeField, Header("Layers")]
     public LayerMask enemyEntity;
@@ -86,6 +88,17 @@ public partial class Player : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetButtonDown("Horizontal"))
+        {
+            if (Time.time - firstClickTime <= timeBetweenClicks && canDash)
+            {
+                StartCoroutine(PlayerDash(Input.GetAxis("Horizontal")));
+                firstClickTime = 0; 
+            }
+            else
+                firstClickTime = Time.time;
+        }
+
         if (isGrounded && !isAttacking && !isGetDamage && !isBlocking && playerStamina > 1f)
         {
             if (Input.GetButtonDown("Fire1"))
