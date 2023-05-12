@@ -16,13 +16,17 @@ public partial class Player : MonoBehaviour
                      public float playerDamage = 3.5f;
     [SerializeField] public int playerMaxHealth = 20;
     [SerializeField] public float playerHealth = 10f;
-    [SerializeField] private float damageGetDelay = 0.7f;
-    [SerializeField] public bool isBlocking;
-    private float oldPlayerLight;
-    private bool isStaminaRegen = true;
     [SerializeField] private float playerStamina = 5f;
+    [SerializeField] private float damageGetDelay = 0.7f;
+
+    private float oldPlayerLight;
+    public bool isBlocking;
+    private bool isStaminaRegen = true;
+
+    // Dash
     private float timeBetweenClicks = .2f;
     private float firstClickTime = 0f;
+    private bool firstClickAxis;
 
     [SerializeField, Header("Layers")]
     public LayerMask enemyEntity;
@@ -90,13 +94,21 @@ public partial class Player : MonoBehaviour
     {
         if (Input.GetButtonDown("Horizontal"))
         {
-            if (Time.time - firstClickTime <= timeBetweenClicks && canDash)
+            bool horisontalAxis = Mathf.Sign(Input.GetAxis("Horizontal")) < 0f;
+            Debug.Log(Input.GetAxis("Horizontal"));
+
+
+            if (canDash && Time.time - firstClickTime <= timeBetweenClicks && firstClickAxis == horisontalAxis)
             {
-                StartCoroutine(PlayerDash(Input.GetAxis("Horizontal")));
+                StartCoroutine(PlayerDash(horisontalAxis));
                 firstClickTime = 0; 
             }
             else
+            {
                 firstClickTime = Time.time;
+                firstClickAxis = horisontalAxis;
+            }
+
         }
 
         if (isGrounded && !isAttacking && !isGetDamage && !isBlocking && playerStamina > 1f)

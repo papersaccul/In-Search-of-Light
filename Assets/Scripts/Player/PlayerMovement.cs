@@ -13,8 +13,8 @@ public partial class Player : MonoBehaviour
     private bool canDash = true;
     private bool isDashing = false;
     private float dashCoolDown = 1f;
-    private float dashDuration = .1f;
-    private float dashSpeed = 200f;
+    private float dashDuration = .3f;
+    private float dashSpeed = 100f;
 
     [SerializeField] private TrailRenderer trailRenderer;
 
@@ -83,26 +83,24 @@ public partial class Player : MonoBehaviour
         }
     }
 
-    private IEnumerator PlayerDash(float direction)
+    private IEnumerator PlayerDash(bool direction)
     {
         float defaultGravity = ObjRigidbody.gravityScale;
+        int dirSign = direction ? -1 : 1;
 
         ObjRigidbody.gravityScale = 0f;
-        ObjRigidbody.velocity = new Vector2(dashSpeed * Mathf.Sign(direction), 0f);
-        Debug.Log(direction);
+        ObjRigidbody.velocity = new Vector2(dashSpeed * dirSign, 0f);
 
         canDash = false;
         isDashing = true;
         trailRenderer.emitting = true;
 
         yield return new WaitForSeconds(dashDuration);
-
         isDashing = false;
         ObjRigidbody.gravityScale = defaultGravity;
         trailRenderer.emitting = false;
 
         yield return new WaitForSeconds(dashCoolDown);
-
         canDash = true;
     }
 }
