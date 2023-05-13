@@ -88,6 +88,8 @@ public partial class Player : MonoBehaviour
         float defaultGravity = ObjRigidbody.gravityScale;
         int dirSign = direction ? -1 : 1;
 
+        playerHealth -= 1f;
+        HealthBar.Instance.UpdateHealthBar(playerHealth);
         ParticleConroller.Instance.Dash(dirSign);
 
         ObjRigidbody.gravityScale = 0f;

@@ -98,7 +98,7 @@ public partial class Player : MonoBehaviour
             Debug.Log(Input.GetAxis("Horizontal"));
 
 
-            if (canDash && Time.time - firstClickTime <= timeBetweenClicks && firstClickAxis == horisontalAxis)
+            if (canDash && playerHealth > 11f && Time.time - firstClickTime <= timeBetweenClicks && firstClickAxis == horisontalAxis)
             {
                 StartCoroutine(PlayerDash(horisontalAxis));
                 firstClickTime = 0; 
