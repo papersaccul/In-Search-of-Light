@@ -7,6 +7,7 @@ public class ParticleConroller : MonoBehaviour
     public static ParticleConroller Instance { get; set; }
 
     [SerializeField] ParticleSystem doubleJumpParticle;
+    [SerializeField] ParticleSystem dashParticle;
 
     public void Start()
     {
@@ -16,5 +17,11 @@ public class ParticleConroller : MonoBehaviour
     public void DoubleJump()
     {
         doubleJumpParticle.Play();
+    }
+
+    public void Dash(float direction)
+    {
+        dashParticle.transform.localScale = new Vector2(-2 * direction, dashParticle.transform.localScale.y);
+        dashParticle.Play();
     }
 }

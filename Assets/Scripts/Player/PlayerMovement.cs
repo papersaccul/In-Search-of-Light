@@ -88,6 +88,8 @@ public partial class Player : MonoBehaviour
         float defaultGravity = ObjRigidbody.gravityScale;
         int dirSign = direction ? -1 : 1;
 
+        ParticleConroller.Instance.Dash(dirSign);
+
         ObjRigidbody.gravityScale = 0f;
         ObjRigidbody.velocity = new Vector2(dashSpeed * dirSign, 0f);
 
