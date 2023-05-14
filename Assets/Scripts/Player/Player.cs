@@ -49,10 +49,11 @@ public partial class Player : MonoBehaviour
 
     private void Awake()
     {
+        isRecharged = true;
+
         ObjRigidbody = GetComponent<Rigidbody2D>();
         ObjAnimator = GetComponent<Animator>();
         ObjSprite = GetComponentInChildren<SpriteRenderer>();
-        isRecharged = true;
         ObjCapsule = GetComponentInChildren<CapsuleCollider2D>();
 
         pieceOfLightPrefab = Resources.Load<GameObject>("PieceofLight");
@@ -95,8 +96,6 @@ public partial class Player : MonoBehaviour
         if (Input.GetButtonDown("Horizontal"))
         {
             bool horisontalAxis = Mathf.Sign(Input.GetAxis("Horizontal")) < 0f;
-            Debug.Log(Input.GetAxis("Horizontal"));
-
 
             if (canDash && playerHealth > 11f && Time.time - firstClickTime <= timeBetweenClicks && firstClickAxis == horisontalAxis)
             {

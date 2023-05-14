@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PieceOfLight : Entity
 {
@@ -19,7 +20,8 @@ public class PieceOfLight : Entity
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            player.playerHealth += 0.5f;
+            if (player.playerHealth < player.playerMaxHealth)
+                player.playerHealth += 0.5f;
             HealthBar.Instance.UpdateHealthBar(player.playerHealth);
             EntityDie();
         }
