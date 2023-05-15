@@ -7,9 +7,11 @@ A game being developed by one person out of pure enthusiasm. The main goal is to
 ### Description: 
 In Search of Light is a 2D pixel game in which the player plays as a knight who battles evil in dark caves in search of light. He must use his combat skills and solve puzzles to progress further into the caves and fight powerful bosses. The game features a light mechanic that is tied to the character's health...
 
-![image](https://user-images.githubusercontent.com/59151352/234416203-819e62c2-2a1a-4f39-be13-2420384c418a.png)
-![image](https://user-images.githubusercontent.com/59151352/234416290-7e19dfaf-34dd-486f-9c48-3f095b8ec0a4.png)
+### Showcase pre-0.9.0a:
 
+![image](https://github.com/papersaccul/In-Search-of-Light/assets/59151352/e8b9c1ff-717b-4895-b862-ae404be18a19)
+![image](https://github.com/papersaccul/In-Search-of-Light/assets/59151352/584f6a1a-3646-4bb5-b16b-67d6b1281401)
+![ezgif-4-c399145384](https://github.com/papersaccul/In-Search-of-Light/assets/59151352/143f089e-2f46-44ac-8582-605180c0f2f2)
+https://github.com/papersaccul/In-Search-of-Light/assets/59151352/bc0b1aad-e517-4527-8ba1-bea9a2c018a2
 
-https://user-images.githubusercontent.com/59151352/234417556-922fe670-abd0-4201-b46d-3b87698a044b.mp4
 
