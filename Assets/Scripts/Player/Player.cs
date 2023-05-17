@@ -32,7 +32,7 @@ public partial class Player : MonoBehaviour
     public LayerMask enemyEntity;
     public LayerMask Ground;
 
-    private Rigidbody2D ObjRigidbody;
+    protected Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
     private SpriteRenderer ObjSprite;
     private CapsuleCollider2D ObjCapsule;
@@ -259,4 +259,19 @@ public enum States
     stop,       // 8    
     rotate,     // 9      
     getDamage   // 10
+}
+
+public enum MainHand
+{
+    none,
+    defaultSword,
+    spear,
+    bow
+}
+
+public enum SecondHand
+{
+    none,
+    shield,
+    lamp
 }

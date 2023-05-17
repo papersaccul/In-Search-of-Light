@@ -17,7 +17,6 @@ public partial class Player : MonoBehaviour
     private float dashSpeed = 100f;
 
     [SerializeField] private TrailRenderer trailRenderer;
-
     private void PlayerRun()
     {
         float targetVelocityX = Input.GetAxis("Horizontal") * playerSpeedMultiplier;
