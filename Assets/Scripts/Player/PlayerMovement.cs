@@ -15,6 +15,7 @@ public partial class Player : MonoBehaviour
     private float dashCoolDown = 1f;
     private float dashDuration = .3f;
     private float dashSpeed = 100f;
+    private bool playerFlipX = false;
 
     [SerializeField] private TrailRenderer trailRenderer;
     private void PlayerRun()
@@ -25,10 +26,13 @@ public partial class Player : MonoBehaviour
         float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.deltaTime);
 
         // anim
-        if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && ObjSprite.flipX != targetVelocityX < 0f)
+        if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && playerFlipX != targetVelocityX < 0f)
             State = States.rotate;
+
         else if ((Mathf.Abs(currentVelocityX) > 5f)) State = States.run;
-        ObjSprite.flipX = targetVelocityX < 0f;
+                playerFlipX = targetVelocityX < 0f;
+
+        ObjSprite.transform.localScale = playerFlipX ? new Vector2(-1f, 1f) : new Vector2(1f, 1f);
 
         // Ground
         if (isGrounded && !isSlope && !isWall)

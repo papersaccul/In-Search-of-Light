@@ -26,6 +26,7 @@ public partial class Player : MonoBehaviour
             StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
 
             State = States.attack1;
+            WeaponState = WeaponStates.attack;
             isAttacking = true;
             isRecharged = false;
 
@@ -58,8 +59,6 @@ public partial class Player : MonoBehaviour
 
     private void EnhancedAttack()
     {
-        Debug.Log("Enh Attack");
-
         playerStamina = 0f;
         StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
 
@@ -71,6 +70,7 @@ public partial class Player : MonoBehaviour
         if (isGrounded && isRecharged)
         {
             State = States.attackEnh;
+            WeaponState = WeaponStates.attack;
             isAttacking = true;
             isRecharged = false;
 
@@ -83,6 +83,7 @@ public partial class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(0.41f);
         isAttacking = false;
+        WeaponState = WeaponStates.idle;
     }
 
     private IEnumerator EnhancedAttackAnimation()
@@ -99,7 +100,8 @@ public partial class Player : MonoBehaviour
         newSaber.GetComponentInChildren<Light2D>().transform.right *= ObjSprite.flipX ? -1f : 1f;
 
         yield return new WaitForSeconds(.3f);
-        
+
+        WeaponState = WeaponStates.idle;
         isEnhAttacking = false;
         isAttacking = false;
     }

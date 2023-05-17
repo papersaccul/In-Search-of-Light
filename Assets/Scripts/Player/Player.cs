@@ -34,7 +34,9 @@ public partial class Player : MonoBehaviour
 
     protected Rigidbody2D ObjRigidbody;
     private Animator ObjAnimator;
+    private Animator ObjAnimatorWeapon;
     private SpriteRenderer ObjSprite;
+    private SpriteRenderer ObjWeaponSprite;
     private CapsuleCollider2D ObjCapsule;
     private GameObject pieceOfLightPrefab;
     private GameObject lightsaberPrefab;
@@ -47,15 +49,28 @@ public partial class Player : MonoBehaviour
         set { ObjAnimator.SetInteger("State", (int)value); }
     }
 
+    private MainHand MainHand
+    {
+        get { return (MainHand)ObjAnimatorWeapon.GetInteger("Weapon"); }
+        set { ObjAnimatorWeapon.SetInteger("Weapon", (int)value); }
+    }
+
+    private WeaponStates WeaponState
+    {
+        get { return (WeaponStates)ObjAnimatorWeapon.GetInteger("WeaponState"); }
+        set { ObjAnimatorWeapon.SetInteger("WeaponState", (int)value); }
+    }
+
     private void Awake()
     {
         isRecharged = true;
 
         ObjRigidbody = GetComponent<Rigidbody2D>();
         ObjAnimator = GetComponent<Animator>();
+        ObjAnimatorWeapon = transform.Find("Sprite/MainHand").GetComponent<Animator>();
         ObjSprite = GetComponentInChildren<SpriteRenderer>();
         ObjCapsule = GetComponentInChildren<CapsuleCollider2D>();
-
+        ObjWeaponSprite = transform.Find("Sprite/MainHand/Sprite").GetComponent<SpriteRenderer>();
         pieceOfLightPrefab = Resources.Load<GameObject>("PieceofLight");
         lightsaberPrefab = Resources.Load<GameObject>("LightSaber");
         playerLight = GetComponentInChildren<Light2D>();
@@ -71,6 +86,8 @@ public partial class Player : MonoBehaviour
         oldPlayerLight = playerLight.intensity;
 
         Instance = this;
+
+        CurrentWeapon = MainHand.defaultSword;
     }
 
     private void FixedUpdate()
@@ -93,6 +110,8 @@ public partial class Player : MonoBehaviour
 
     private void Update()
     {
+        // Input
+
         if (Input.GetButtonDown("Horizontal"))
         {
             bool horisontalAxis = Mathf.Sign(Input.GetAxis("Horizontal")) < 0f;
@@ -144,7 +163,8 @@ public partial class Player : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Jump") && playerStamina > 1f)
-            PlayerJump();            
+            PlayerJump(); 
+
     }
 
     private void PlayerBlock()
@@ -248,30 +268,37 @@ public partial class Player : MonoBehaviour
 
 public enum States
 {
-    idle,       // 0
-    run,        // 1
-    jump,       // 2
-    fall,       // 3
-    attack1,    // 4
-    attackEnh,  // 5
-    block,      // 6 
-    die,        // 7 not used
-    stop,       // 8    
-    rotate,     // 9      
-    getDamage   // 10
+    idle,           // 0
+    run,            // 1
+    jump,           // 2
+    fall,           // 3
+    attack1,        // 4
+    attackEnh,      // 5
+    block,          // 6 
+    die,            // 7 not used
+    stop,           // 8    
+    rotate,         // 9      
+    getDamage       // 10
 }
 
 public enum MainHand
 {
-    none,
-    defaultSword,
-    spear,
-    bow
+    none,           // 0
+    defaultSword,   // 1
+    spear,          // 2
+    bow             // 3
+}
+
+public enum WeaponStates
+{
+    idle,           // 0
+    attack,         // 1
+    reload          // 2
 }
 
 public enum SecondHand
 {
-    none,
-    shield,
-    lamp
+    none,           // 0
+    shield,         // 1
+    lamp            // 2
 }
