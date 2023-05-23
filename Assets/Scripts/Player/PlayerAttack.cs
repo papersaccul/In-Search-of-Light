@@ -46,10 +46,14 @@ public partial class Player : MonoBehaviour
     // Will be called by animator
     private void onAttack()
     {
-        float swordOffsetX;
+        float attackOffsetX = 0f;
 
-        swordOffsetX = ObjSprite.flipX ? -8.5f : +8.5f;
-        ObjAttackPosition.position = new Vector3(ObjRigidbody.position.x + swordOffsetX, ObjAttackPosition.position.y, 0f);
+        if (MainHand == MainHand.defaultSword)
+        {
+            attackOffsetX = playerFlipX ? -8.5f : +8.5f;
+        }
+
+        ObjAttackPosition.position = new Vector3(ObjRigidbody.position.x + attackOffsetX, ObjAttackPosition.position.y, 0f);
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(ObjAttackPosition.position, attackRange, enemyEntity);
 
@@ -59,23 +63,31 @@ public partial class Player : MonoBehaviour
 
     private void EnhancedAttack()
     {
-        playerStamina = 0f;
-        StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
-
-        playerHealth -= 5;
-        HealthBar.Instance.UpdateHealthBar(playerHealth);
-
-        isEnhAttacking = true;
-
         if (isGrounded && isRecharged)
         {
-            State = States.attackEnh;
-            WeaponState = WeaponStates.attack;
-            isAttacking = true;
-            isRecharged = false;
+            playerStamina = 0f;
+            StaminaBar.Instance.UpdateStaminaSlider(playerStamina);
 
-            StartCoroutine(EnhancedAttackAnimation());
-            StartCoroutine(AttackCoolDown());
+            playerHealth -= 5f;
+            HealthBar.Instance.UpdateHealthBar(playerHealth);
+
+            isEnhAttacking = true;
+
+            if (MainHand == MainHand.defaultSword)
+            {
+                State = States.attackEnh;
+                WeaponState = WeaponStates.attack;
+                isAttacking = true;
+                isRecharged = false;
+
+                StartCoroutine(EnhancedAttackAnimation());
+                StartCoroutine(AttackCoolDown());
+            }
+
+            if (MainHand == MainHand.spear)
+            {
+
+            }
         }
     }
 
@@ -88,16 +100,16 @@ public partial class Player : MonoBehaviour
 
     private IEnumerator EnhancedAttackAnimation()
     {
-        float saberOffsetX = ObjSprite.flipX ? -7f : +7f;
+        float saberOffsetX = playerFlipX ? -7f : +7f;
         DOTween.To(() => playerLight.intensity, x => playerLight.intensity = x, 25f, .3f);
 
         yield return new WaitForSeconds(.3f);
 
         DOTween.To(() => playerLight.intensity, x => playerLight.intensity = x, oldPlayerLight, .3f);
         GameObject newSaber = Instantiate(lightsaberPrefab, new Vector3(ObjAttackPosition.position.x + saberOffsetX, ObjAttackPosition.position.y, 0f), Quaternion.identity);
-        newSaber.GetComponent<Rigidbody2D>().AddForce(ObjSprite.flipX ? Vector2.left * 1000f : Vector2.right * 1000f);
+        newSaber.GetComponent<Rigidbody2D>().AddForce(playerFlipX ? Vector2.left * 1000f : Vector2.right * 1000f);
 
-        newSaber.GetComponentInChildren<Light2D>().transform.right *= ObjSprite.flipX ? -1f : 1f;
+        newSaber.GetComponentInChildren<Light2D>().transform.right *= playerFlipX ? -1f : 1f;
 
         yield return new WaitForSeconds(.3f);
 
