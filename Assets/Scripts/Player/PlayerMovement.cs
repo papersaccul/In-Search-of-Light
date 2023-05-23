@@ -25,7 +25,7 @@ public partial class Player : MonoBehaviour
         float smoothTime = 3f;
         float newVelocityX = Mathf.Lerp(currentVelocityX, targetVelocityX, smoothTime * Time.deltaTime);
 
-        // anim
+        // Anim
         if (Mathf.Abs(currentVelocityX) >= 0f && Mathf.Abs(currentVelocityX) < 2f && playerFlipX != targetVelocityX < 0f)
             State = States.rotate;
 

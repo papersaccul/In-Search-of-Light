@@ -49,7 +49,7 @@ public partial class Player : MonoBehaviour
         set { ObjAnimator.SetInteger("State", (int)value); }
     }
 
-    private MainHand MainHand
+    public MainHand MainHand
     {
         get { return (MainHand)ObjAnimatorWeapon.GetInteger("Weapon"); }
         set { ObjAnimatorWeapon.SetInteger("Weapon", (int)value); }
