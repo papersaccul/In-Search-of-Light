@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Weapons : MonoBehaviour
+public class Weapons : Item
 {
     [SerializeField] private WeaponType weaponType;
 
@@ -44,21 +44,19 @@ public class Weapons : MonoBehaviour
     private void EquipWeapon()
     {
         isEquipAnim = true;
-        Debug.Log("anim");
-        transform.DOMove(player.transform.position + new Vector3(0f, 8f), .5f)
-            .SetEase(Ease.InOutCubic)
+        transform.DOMove(player.transform.position + new Vector3(0f, 8f), .3f)
+            .SetEase(Ease.Flash)
             .OnComplete(OnEquipWeapon);
     }
 
     private void OnEquipWeapon()
     {
-        Vector2 dropDirection = new Vector2(Random.Range(-1f, 1f), 1f);
+        PickUp();
 
         WeaponType prevWeaponType = weaponType;
         weaponType = (WeaponType)player.MainHand;
         player.MainHand = (MainHand)prevWeaponType;
-        GetComponent<Rigidbody2D>().AddForce(dropDirection * 100f);
-
+        
         Start();
     }
 
