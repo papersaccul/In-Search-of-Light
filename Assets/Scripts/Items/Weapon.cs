@@ -8,11 +8,11 @@ public class Weapons : Item
 {
     [SerializeField] private WeaponType weaponType;
 
-    private bool isCollision = false;
     private bool isEquipAnim = false;
     private float distance;
     private Player player;
     private Vector3 direction;
+    private Shader outline;
     private SpriteRenderer weaponSprite;
     private string weaponPath;
 
@@ -20,13 +20,15 @@ public class Weapons : Item
     private void Start()
     {
         isEquipAnim = false;
+        weaponSprite = GetComponentInChildren<SpriteRenderer>();
 
         player = Player.Instance;
-        weaponSprite = GetComponentInChildren<SpriteRenderer>();
         weaponPath = $"Weapons/{weaponType}";
 
         Sprite sprite = Resources.Load<Sprite>(weaponPath);
         weaponSprite.sprite = sprite;
+
+        base.Start(weaponSprite);
     }
 
     private void Update()
@@ -39,6 +41,8 @@ public class Weapons : Item
             if (distance < 30f && Input.GetKey(KeyCode.E) && isCollision && !isEquipAnim)
                 EquipWeapon();   
         }
+
+        base.Update();
     }
 
     private void EquipWeapon()
@@ -51,23 +55,13 @@ public class Weapons : Item
 
     private void OnEquipWeapon()
     {
-        PickUp();
+        PickUp(outline);
 
         WeaponType prevWeaponType = weaponType;
         weaponType = (WeaponType)player.MainHand;
         player.MainHand = (MainHand)prevWeaponType;
         
         Start();
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        isCollision = true;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        isCollision = false;
     }
 }
  
