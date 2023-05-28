@@ -73,20 +73,17 @@ public partial class Player : MonoBehaviour
 
             isEnhAttacking = true;
 
-            if (MainHand == MainHand.defaultSword)
+            Debug.Log(MainHand);
+
+            if (MainHand == MainHand.defaultSword || MainHand == MainHand.spear)
             {
                 State = States.attackEnh;
                 WeaponState = WeaponStates.attack;
                 isAttacking = true;
                 isRecharged = false;
 
-                StartCoroutine(EnhancedAttackAnimation());
+                StartCoroutine(LightAttackAnimation());
                 StartCoroutine(AttackCoolDown());
-            }
-
-            if (MainHand == MainHand.spear)
-            {
-
             }
         }
     }
@@ -98,24 +95,58 @@ public partial class Player : MonoBehaviour
         WeaponState = WeaponStates.idle;
     }
 
-    private IEnumerator EnhancedAttackAnimation()
+    private IEnumerator LightAttackAnimation()
     {
+        Dictionary<MainHand, GameObject> weaponPrefabs = new Dictionary<MainHand, GameObject>() {
+            { MainHand.defaultSword, Resources.Load<GameObject>("LightSaber") },
+            { MainHand.spear, Resources.Load<GameObject>("LightSpear") },
+        };
+
+        Dictionary<MainHand, float> LightSpeeds = new Dictionary<MainHand, float>() {
+            { MainHand.defaultSword, 1000f }, 
+            { MainHand.spear, 1500f }
+        };
+
+        GameObject lightPrefab = null;
+
+        if (!weaponPrefabs.TryGetValue(MainHand, out lightPrefab))
+        {
+            Debug.LogError($"Invalid MainHand: {MainHand}");
+            yield break;
+        }
+
+        float lightSpeed = 0f;
+
+        if (!LightSpeeds.TryGetValue(MainHand, out lightSpeed))
+        {
+            Debug.LogError($"Invalid MainHand: {MainHand}");
+            yield break;
+        }
+
+        if (lightPrefab == null)
+        {
+            Debug.LogError("The ligth attack object is missing from the Resources folder.");
+            yield break;
+        }
+
         float saberOffsetX = playerFlipX ? -7f : +7f;
         DOTween.To(() => playerLight.intensity, x => playerLight.intensity = x, 25f, .3f);
 
         yield return new WaitForSeconds(.3f);
 
         DOTween.To(() => playerLight.intensity, x => playerLight.intensity = x, oldPlayerLight, .3f);
-        GameObject newSaber = Instantiate(lightsaberPrefab, new Vector3(ObjAttackPosition.position.x + saberOffsetX, ObjAttackPosition.position.y, 0f), Quaternion.identity);
-        newSaber.GetComponent<Rigidbody2D>().AddForce(playerFlipX ? Vector2.left * 1000f : Vector2.right * 1000f);
 
+        GameObject newSaber = Instantiate(lightPrefab, new Vector3(ObjAttackPosition.position.x + saberOffsetX, ObjAttackPosition.position.y, 0f), Quaternion.identity);
         newSaber.GetComponentInChildren<Light2D>().transform.right *= playerFlipX ? -1f : 1f;
+        newSaber.GetComponent<Rigidbody2D>().AddForce(playerFlipX ? Vector2.left * lightSpeed : Vector2.right * lightSpeed);
 
         yield return new WaitForSeconds(.3f);
 
         WeaponState = WeaponStates.idle;
         isEnhAttacking = false;
         isAttacking = false;
+
+        yield return true;
     }
 
     private IEnumerator AttackCoolDown()

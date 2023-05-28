@@ -20,9 +20,9 @@ public class Item : MonoBehaviour
         Vector3 direction = player.transform.position - transform.position;
         float distance = direction.magnitude;
 
-        float brightness = Mathf.Lerp(1, 2, Mathf.Clamp01(distance / 30f));
+        float brightness = Mathf.Lerp(4, 1, Mathf.Clamp01(distance / 30f));
         if (!isCollision)
-            spriteRenderer.material.color = Color.Lerp(Color.yellow, Color.white, Mathf.Clamp01(distance / 25f)) * brightness;
+            spriteRenderer.material.color = Color.Lerp(hightlightOutlineColor, Color.white, Mathf.Clamp01(distance / 45f)) * brightness;
     }
 
     protected void PickUp(Shader outline)
